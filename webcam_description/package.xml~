@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>webcap_description</name>
+  <version>0.1.0</version>
+  <description>webcap_description package</description>
+
+  <maintainer email="oriolorraserra@gmail.com">OriolOrra</maintainer>
+
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/oriolorra/webcap_description/issues</url>
+  <url type="repository">https://github.com/oriolorra/webcap_description</url>
+
+  <author email="oriolorraserra@gmail.com">Oriol Orra</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

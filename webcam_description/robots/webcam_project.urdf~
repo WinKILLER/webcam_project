@@ -76,7 +76,7 @@
 
   <link name="webcam">    
     <visual>
-      <origin rpy="0 0 0" xyz="-0.222 -0.25 -1.27"/>
+      <origin rpy="0 0 0" xyz="-0.222 -0.25 -1.2"/>
       <geometry>
         <mesh filename="package://webcam_description/meshes/Piece2.stl" scale="0.01 0.01 0.01"/>
       </geometry>
