@@ -80,6 +80,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        webcam_support:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -99,6 +104,8 @@ Visualization Manager:
           Value: true
         webcam:
           Value: true
+        webcam_support:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: false
@@ -108,8 +115,9 @@ Visualization Manager:
         w:
           servo1:
             servo2:
-              webcam:
-                {}
+              webcam_support:
+                webcam:
+                  {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -136,7 +144,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.96055
+      Distance: 4.3618
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
@@ -148,10 +156,10 @@ Visualization Manager:
         Z: 0
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.094797
+      Pitch: 0.149801
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.9999
+      Yaw: 5.82493
     Saved: ~
 Window Geometry:
   Displays:
