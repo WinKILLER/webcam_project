@@ -1,110 +1,132 @@
 <?xml version="1.0"?>
 <robot name="webcam_project">
 
-  <link name="w"/>
+  <link name="world"/>
 
-  <joint name="world_to_servo1" type="fixed">
-    <parent link="w"/>
-    <child link="servo1"/>
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
   </joint>
 
- <link name="servo1">
+ <link name="base">
     <visual>
-      <origin rpy="0 0 0" xyz="0.31 -0.325 0.05"/>
+      <origin rpy="0 0 0" xyz="0 0.27 0"/>
       <geometry>
-        <mesh filename="package://webcam_description/meshes/Piece3.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://webcam_description/meshes/base_def.stl" scale="0.01 0.01 0.01"/>
       </geometry>
 	<material name="blue">
             <color rgba="0 0 1 1"/>
        </material>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0.31 -0.325 0.05"/>
+      <origin rpy="0 0 0" xyz="0 0.27 -0.5"/>
       <geometry>
-        <mesh filename="package://webcam_description/meshes/piece3_collision.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://webcam_description/meshes/base_def_collision.stl" scale="0.01 0.01 0.01"/>
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="-25.944387e-3 32.152683e-3 26.174015e-3"/>
-      <mass value="95934.789062e-15"/>
-      <inertia ixx="68891312e-6"
-               ixy="121976.304688e-6"
-               ixz="-2242330.5e-6"
-               iyy="132973792e-6"
-               iyz="-5062996e-6"
-               izz="102348056e-6"/>
+      <origin rpy="0 0 0" xyz="3.036509e-3 -46.026047e-3 22.841654e-3"/>
+      <mass value="124555.984375e-15"/>
+      <inertia ixx="212207024e-6"
+               ixy="-7401570e-6"
+               ixz="-201348.625e-6"
+               iyy="140697648e-6"
+               iyz="-24544444e-6"
+               izz="330641152e-6"/>
     </inertial>
  </link>
 
-  <joint name="servo1_to_servo2" type="continuous">
-    <parent link="servo1"/>
-    <child link="servo2"/>
-    <origin xyz="0 0 0.75"/>
+  <joint name="base_to_body" type="revolute">
+    <limit effort="10.0" lower="-3.1415" upper="3.1415" velocity="0.5"/>
+    <parent link="base"/>
+    <child link="body"/>
+    <origin xyz="0 0 0.47"/>
     <axis xyz="0 0 1"/>
   </joint>
 
-  <link name="servo2">   
+  <link name="body">   
     <visual>
-      <origin rpy="0 0 0" xyz="0.31 -0.3 -0.7"/>
+      <origin rpy="0 0 3.14159" xyz="0 -0.27 -0.5"/>
       <geometry>
-        <mesh filename="package://webcam_description/meshes/Piece1.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://webcam_description/meshes/body_def.stl" scale="0.01 0.01 0.01"/>
       </geometry>
 	<material name="white">
             <color rgba="1 1 1 1"/>
        </material>
     </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0.31 -0.3 -0.7"/>
-      <geometry>
-        <mesh filename="package://webcam_description/meshes/piece1_collision.stl" scale="0.01 0.01 0.01"/>
-      </geometry>
-    </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="-31.285517e-3 45.131599e-3 109.967560e-3"/>
-      <mass value="40842.414062e-15"/>
-      <inertia ixx="36224836e-6"
-               ixy="28357.201172e-6"
-               ixz="196282.78e-6"
-               iyy="79008008e-6"
-               iyz="-3195690.5e-6"
-               izz="65240460e-6"/>
+      <origin rpy="0 0 0" xyz="20.027670e-3 -26.884706e-3 77.268082e-3"/>
+      <mass value="71232.75e-15"/>
+      <inertia ixx="113331136e-6"
+               ixy="-2962.782715e-6"
+               ixz="-38169916e-6"
+               iyy="133387760e-6"
+               iyz="-11432.373047e-6"
+               izz="113747784e-6"/>
     </inertial>
   </link>
 
-<joint name="servo2_to_webcam_support" type="revolute">
+<joint name="body_to_head" type="revolute">
     <limit effort="10.0" lower="-0.9" upper="0.2" velocity="0.5"/>
-    <parent link="servo2"/>
-    <child link="webcam_support"/>
-    <origin xyz="0.53 0 0.54" rpy="0 0 0"/>
+    <parent link="body"/>
+    <child link="head"/>
+    <origin xyz="-0.36 0 0.75" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
   </joint>
 
-  <link name="webcam_support">    
+  <link name="head">    
     <visual>
-      <origin rpy="0 0 0" xyz="-0.222 -0.25 -1.27"/>
+      <origin rpy="0 0 -3.14159" xyz="0.33 -0.265 -1.32"/>
       <geometry>
-        <mesh filename="package://webcam_description/meshes/Piece2.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://webcam_description/meshes/head_def.stl" scale="0.01 0.01 0.01"/>
       </geometry>
     </visual>
+    <collision>
+      <origin rpy="0 0 -3.14159" xyz="0.33 -0.265 -1.32"/>
+      <geometry>
+        <mesh filename="package://webcam_description/meshes/head_def_collision.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-7.828617e-3 -13.420546e-3 120.721245e-3"/>
+      <mass value="94819.84375e-15"/>
+      <inertia ixx="64367976e-6"
+               ixy="7794606.5e-6"
+               ixz="-7199586.5e-6"
+               iyy="94425784e-6"
+               iyz="-1104984.75e-6"
+               izz="97511984e-6"/>
+    </inertial>
   </link>
 
- <joint name="webcam_support_to_webcam" type="fixed">
-    <parent link="webcam_support"/>
+ <joint name="head_to_webcam" type="fixed">
+    <parent link="head"/>
     <child link="webcam"/>
-    <origin xyz="-0.7 -0.3 -0.005" rpy="0 0 -1.575"/>
+    <origin xyz="0.475 -0.35 -0.005" rpy="0 0 -1.5707"/>
   </joint>
 
 <link name="webcam">    
     <visual>
-      <origin rpy="0 0 1.575" xyz="-0.042 0.45 -1.27"/>
+      <origin rpy="0 0 -1.5707" xyz="-0.05 -0.15 -1.315"/>
       <geometry>
-        <mesh filename="package://webcam_description/meshes/webcam.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://webcam_description/meshes/camera_def.stl" scale="0.01 0.01 0.01"/>
       </geometry>
 		<material name="green">
             <color rgba="0 1 0 1"/>
        </material>
     </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-13.403990e-3 -2.899170e-3 122.855339e-3"/>
+      <mass value="36673.832031e-15"/>
+      <inertia ixx="13506580e-6"
+               ixy="27.15884e-6"
+               ixz="-96.778366e-6"
+               iyy="16352028e-6"
+               iyz="-198708.015625e-6"
+               izz="8853131e-6"/>
+    </inertial>
   </link>
 
 </robot>
