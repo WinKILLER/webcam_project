@@ -1,0 +1,33 @@
+<launch>
+
+  <param name="robot_description" textfile="$(find webcam_description)/robots/webcam_project.urdf" />	
+
+   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+    <rosparam param="source_list">[kinematics/joint_states, /webcam_project/joint_states] </rosparam>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find webcam_description)/launch/display.rviz"/>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find webcam_description)/config/controllers.yaml" />
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="webcam_project" args="my_webcam_controller joint_state_controller"/>
+
+  <!--Load robot to simulation -->
+  <node name="spwan_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model webcam_project" respawn="false" output="screen"/>
+
+  <!--Load simulation-->
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find webcam_description)/worlds/simple.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+</launch>

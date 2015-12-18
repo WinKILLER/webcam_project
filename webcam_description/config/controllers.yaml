@@ -1,0 +1,10 @@
+webcam_project:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  my_webcam_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - base_to_body
+      - body_to_head

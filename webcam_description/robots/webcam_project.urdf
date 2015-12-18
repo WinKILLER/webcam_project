@@ -46,6 +46,16 @@
     <axis xyz="0 0 1"/>
   </joint>
 
+  <transmission name="base_to_body_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_to_body">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_to_body_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
   <link name="body">   
     <visual>
       <origin rpy="0 0 3.14159" xyz="0 -0.27 -0.5"/>
@@ -75,6 +85,16 @@
     <origin xyz="-0.362 0 0.75" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
   </joint>
+
+  <transmission name="body_to_head_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="body_to_head">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="body_to_head_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
   <link name="head">    
     <visual>
@@ -128,5 +148,11 @@
                izz="8853131e-6"/>
     </inertial>
   </link>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <!--robotNamespace>/MYROBOT</robotNamespace-->
+    </plugin>
+  </gazebo>
 
 </robot>
