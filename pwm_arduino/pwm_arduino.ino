@@ -11,7 +11,7 @@ Servo servo;
 void servo_cb( const std_msgs::Int8& cmd_msg)
 {  
   x=cmd_msg.data;
-  y=(((-9/7)*x)+90);
+  y=(((-9/6)*x)+90);
   
   if (y < 0) y=0;
    
