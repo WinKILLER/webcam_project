@@ -1,6 +1,9 @@
 #ifndef ROS_KALMAN_FILTER_NODE_H
 #define ROS_KALMAN_FILTER_NODE_H
 
+//ROS
+#include <ros/ros.h>
+
 //std C++
 #include <iostream>
 
@@ -75,7 +78,7 @@ class RosKalmanFilterNode{
           * Returns rate_
           *
           **/
-         double getRate() const;
+         double getRate();
 
 
 };

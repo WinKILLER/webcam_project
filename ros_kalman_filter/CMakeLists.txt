@@ -11,7 +11,7 @@ find_package( catkin REQUIRED COMPONENTS
       std_msgs)
 
 ## System dependencies are found with CMake's conventions
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 2 REQUIRED)
 
 #source files
 SET(SRCS 
