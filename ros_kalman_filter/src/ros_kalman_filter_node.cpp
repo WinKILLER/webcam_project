@@ -1,9 +1,4 @@
 #include "ros_kalman_filter_node.h"
-#include <ros/ros.h>
-
-//Eigen
-#include <eigen3/Eigen/Dense>
-#include <eigen3/Eigen/Geometry>
 
 using namespace Eigen;
 
@@ -57,34 +52,27 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     rate_=10;
 
     //set publishers
-    kalman_msg = nh_.advertise<std_msgs::Float32MultiArray>("kalman_out", 100);
+    kalman_publi = nh_.advertise<std_msgs::Float32MultiArray>("kalman_out", 100);
 
     //set subscribers
     detected_pixels = nh_.subscribe("detector_out", 1, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
-
-
-
 
     C_nx << sigma_p_x, 0, 0, 0,
             0, sigma_p_x, 0, 0,
             0, 0, sigma_v_x, 0,
             0, 0, 0, sigma_v_x;
 
-
     C_x_before << 100, 0, 0, 0,
             0, 10^2, 0, 0,
             0, 0, 5^2, 0,
             0, 0, 0, 5^2;
 
-
     H << 1, 0, 0, 0,
          0, 1, 0, 0;
-
 
     sigma_nz = 20^2;
     C_nz << sigma_nz, 0,
             0, sigma_nz;
-
 
     dT = 0;
     precTick = 0;
@@ -103,7 +91,7 @@ RosKalmanFilterNode::RosKalmanFilterNode():
 
 RosKalmanFilterNode::~RosKalmanFilterNode()
 {
-    //
+    // Destructor
 }
 
 void RosKalmanFilterNode::prediction()
@@ -122,7 +110,6 @@ void RosKalmanFilterNode::prediction()
 
 void RosKalmanFilterNode::correction()
 {
-
     z_predicted = H * x_predicted;
 
     if(distanceMalanovich() <= 7){
@@ -136,7 +123,6 @@ void RosKalmanFilterNode::correction()
 
 double RosKalmanFilterNode::distanceMalanovich()
 {
-
     Eigen::Vector2f error_z = z_t - z_predicted;
     Eigen::Matrix2f TEMP = H * C_x * H.transpose();
     Eigen::Matrix2f inverse = (C_nz + TEMP).inverse();
@@ -146,12 +132,12 @@ double RosKalmanFilterNode::distanceMalanovich()
     dist = (distance(0) + distance(1));
 
     return dist;
-
 }
 
 void RosKalmanFilterNode::publish()
 {
-    //PUBLISH
+    kalman_msg_ = x_t;
+    kalman_publi.publish(kal_msg_);
 }
 
 double RosKalmanFilterNode::getRate()
@@ -161,7 +147,6 @@ double RosKalmanFilterNode::getRate()
 
 void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& msg)
 {
-
 
 
 }

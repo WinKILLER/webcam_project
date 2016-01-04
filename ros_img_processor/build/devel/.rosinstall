@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/oos/catkin_ws/src/webcam_project/ros_img_processor/build/devel/setup.sh

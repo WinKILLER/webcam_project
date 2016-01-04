@@ -16,8 +16,8 @@ find_package(OpenCV REQUIRED)
 
 #source files
 SET(SRCS 
-      src/ros_img_processor_node.cpp
-      src/ros_img_processor_main.cpp)
+      src/ros_face_detector_node.cpp
+      src/ros_face_detector_main.cpp)
 
 ## The catkin_package macro generates cmake config files for your package
 catkin_package(
@@ -31,12 +31,12 @@ catkin_package(
 include_directories(${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
 ## Declare a cpp executable for pipol_tracker_node
-add_executable(ros_img_processor ${SRCS})
+add_executable(ros_face_detector ${SRCS})
 #add_dependencies(pipol_tracker_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
-target_link_libraries(ros_img_processor ${OpenCV_LIBS} ${catkin_LIBRARIES})
+target_link_libraries(ros_face_detector ${OpenCV_LIBS} ${catkin_LIBRARIES})
 
 #install binaries
-install(TARGETS ros_img_processor
+install(TARGETS ros_face_detector
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #Share launch and configs

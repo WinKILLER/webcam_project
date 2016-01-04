@@ -1,6 +1,10 @@
 #ifndef ROS_KALMAN_FILTER_NODE_H
 #define ROS_KALMAN_FILTER_NODE_H
 
+//Eigen
+#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/Geometry>
+
 //ROS
 #include <ros/ros.h>
 
@@ -21,7 +25,8 @@ class RosKalmanFilterNode{
         ros::Subscriber detected_pixels;
 
         //publisher
-        ros::Publisher kalman_msg;
+        Eigen::Vector4f kalman_msg_;
+        ros::Publisher kalman_publi;
 
         //wished process rate [hz]
         double rate_;

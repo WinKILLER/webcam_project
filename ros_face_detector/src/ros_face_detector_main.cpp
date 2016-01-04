@@ -4,14 +4,14 @@
 int main(int argc, char **argv)
 {
       //init ros
-      ros::init(argc, argv, "ros_img_processor");
+      ros::init(argc, argv, "ros_face_detector");
       
       //create ros wrapper object
-      RosImgProcessorNode imgp;  //no es darle un nombre, crea un objeto de dicha clase
+      RosFaceDetectorNode face_detector;  //no es darle un nombre, crea un objeto de dicha clase
 
       // double ratenode = imgp.getRate();
       // set node loop rate
-      ros::Rate loopRate(imgp.getRate());
+      ros::Rate loopRate(face_detector.getRate());
 
 
       //node loop 
@@ -21,11 +21,11 @@ int main(int argc, char **argv)
             ros::spinOnce();
 
             //do things
-            imgp.process();
+            face_detector.detect_face();
 
             
             //publish things
-            imgp.publish(); 
+            face_detector.publish();
                         
             //relax to fit output rate
             loopRate.sleep();            
