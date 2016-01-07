@@ -19,9 +19,9 @@ Eigen::Matrix4d C_x_predicted;
 Eigen::Matrix4d C_x_before;
 
 //z_t = H*x_t + n_z
-Eigen::MatrixXd H(4,2);
-Eigen::MatrixXd H_inv(4,2);
-Eigen::MatrixXd H_T(2,4);
+Eigen::MatrixXd H(2,4);
+Eigen::MatrixXd H_inv(2,4);
+Eigen::MatrixXd H_T(4,2);
 
 //Measurements vectors
 Eigen::Vector2d z_t;
@@ -37,7 +37,7 @@ double dT;
 double precTick;
 double ticks;
 
-Eigen::MatrixXd K(4,2);
+Eigen::MatrixXd K(2,4);
 Eigen::Matrix4d I;
 
 Eigen::Vector2d distance;
@@ -48,18 +48,30 @@ double dist;
 RosKalmanFilterNode::RosKalmanFilterNode():
     nh_(ros::this_node::getName())
 {
-
+    std::cout << "////Ping 2a" << std::endl;
     //loop rate [hz], Could be set from a yaml file
     rate_=10;
 
+    std::cout << "////Ping 2b" << std::endl;
     //set publishers
-    kalman_msg_.layout.dim[0].label = "states";
-    kalman_msg_.layout.dim[0].size = 4;
+    std::cout << "////Ping 2c" << std::endl;
 
+    kalman_msg_.layout.dim.resize(1);
+    kalman_msg_.layout.dim[0].label = "kalman_states";
+    kalman_msg_.layout.dim[0].size = 4;
+    kalman_msg_.data.resize(4);
     kalman_publi = nh_.advertise<std_msgs::Float32MultiArray>("kalman_out", 100);
 
+    std::cout << "////Ping 2d" << std::endl;
     //set subscribers
-    detected_pixels = nh_.subscribe("detector_out", 1, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
+    detected_pixels = nh_.subscribe("/ros_face_detector/detector_out", 1, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
+
+    std::cout << "////Ping 2e" << std::endl;
+
+    x_predicted(0) = 320;
+    x_predicted(1) = 240;
+    x_predicted(2) = 0;
+    x_predicted(3) = 0;
 
     C_nx << sigma_p_x, 0, 0, 0,
             0, sigma_p_x, 0, 0,
@@ -91,6 +103,8 @@ RosKalmanFilterNode::RosKalmanFilterNode():
          0, 1, 0, 0,
          0, 0, 1, 0,
          0, 0, 0 ,1;
+
+    std::cout << "////Ping 2f" << std::endl;
 }
 
 RosKalmanFilterNode::~RosKalmanFilterNode()
@@ -102,29 +116,38 @@ void RosKalmanFilterNode::prediction()
 {
 
     x_before = x_t;
+    std::cout << "////Ping 4a" << std::endl;
     C_x_before = C_x;
     x_predicted = F * x_before;
 
+    std::cout << "////Ping 4b" << std::endl;
     precTick = ticks;
     ticks = (double) cv::getTickCount();
     dT = (ticks - precTick) / cv::getTickFrequency(); //seconds
 
     C_x_predicted = F * C_x_before * F.transpose() + C_nx;
+    std::cout << "////Ping 4c" << std::endl;
 }
 
 void RosKalmanFilterNode::correction()
 {
-    z_predicted = H * x_predicted;
     H_T = H.transpose();
+    std::cout << "////Ping 5a:" << std::endl;
+    z_predicted = H * x_predicted;
+    std::cout << "////Ping 5b" << std::endl;
+
+    std::cout << "////Ping 5c" << std::endl;
 
 
-    if(distanceMalanovich() <= 7){
+   // if(distanceMalanovich() <= 7){
+
         K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
         x_t = x_predicted + K*(z_t - z_predicted);
 
         Eigen::Matrix4d TEMP = (I - (K * H));
         C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
-    }
+    //}
+    std::cout << "////Ping 5d" << std::endl;
 }
 
 double RosKalmanFilterNode::distanceMalanovich()
@@ -137,7 +160,7 @@ double RosKalmanFilterNode::distanceMalanovich()
     distance = (error_z.transpose() * inverse) + error_z.transpose();
 
     dist = (distance(0) + distance(1));
-
+    std::cout << "//// MALANOVICH dist:" << dist << std::endl;
     return dist;
 }
 
@@ -145,7 +168,9 @@ void RosKalmanFilterNode::publish()
 {
     kalman_msg_.data.clear();
 
+    std::cout << "////Ping 7a" << std::endl;
     kalman_msg_.data[0] = (float)x_t[0];
+    std::cout << "////Ping 7b" << std::endl;
     kalman_msg_.data[1] = (float)x_t[1];
     kalman_msg_.data[2] = (float)x_t[2];
     kalman_msg_.data[3] = (float)x_t[3];
@@ -160,6 +185,17 @@ double RosKalmanFilterNode::getRate()
 
 void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
 {
-
+    try
+    {
+        z_t[0] = _msg -> data[0];
+        z_t[1] = _msg -> data[1];
+        z_t[2] = _msg -> data[2];
+        z_t[3] = _msg -> data[3];
+    }
+    catch (ros::Exception& e)
+    {
+        ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
+        return;
+    }
 
 }
