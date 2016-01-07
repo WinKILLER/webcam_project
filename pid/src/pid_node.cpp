@@ -1,4 +1,4 @@
-#include <pid_node.h>
+#include "pid_node.h"
 
 //ROS includes
 #include <ros/ros.h>
@@ -16,10 +16,10 @@ PidNode::PidNode():
     rate_=10;
 
     //set publishers
-    pid_msg = nh_.advertise<std_msgs::Float32MultiArray>("pid_out", 100);
+    pid_publi = nh_.advertise<std_msgs::Float32MultiArray>("pid_out", 100);
 
     //set subscribers
-    kalman_msg = nh_.subscribe("kalman_out", 1, &PidNode::ros_kalman_filter_node, this);
+    kalman_publi = nh_.subscribe("/ros_kalman_filter/kalman_out", 1, &PidNode::kalmanfiltercallback, this);
 
 }
 
@@ -70,10 +70,14 @@ void PidNode::pid()
     hardware_interface::JointHandle joint1;
     control_toolbox::Pid pidx;
     control_toolbox::Pid pidy;
+    hardware_interface::VelocityJointInterface hard_interface;
 
     pidx.setGains(1,2,3,4,5);
     joint1.name_ = "joint1";
 
+    hard_interface.getNames("world");
+    vel_controller.init(hard_interface, nh);
+    vel_controller.
 
      /*pid.initPid(6.0, 1.0, 2.0, 0.3, -0.3);
      double position_desi_ = 0.5;

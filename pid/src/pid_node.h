@@ -15,17 +15,17 @@ class PidNode{
         ros::NodeHandle nh_;
 
         //subscriber to kalman filter
-        ros::Subscriber kalman_msg;
+        ros::Subscriber kalman_publi;
 
         //publisher
-        ros::Publisher pid_msg;
+        ros::Publisher pid_publi;
 
         //wished process rate [hz]
         double rate_;
 
     protected:
         //callbacks
-        void ros_kalman_filter_node(const std_msgs::Float32MultiArray::ConstPtr& msg);
+        void kalmanfiltercallback(const std_msgs::Float32MultiArray::ConstPtr& msg);
 
     public:
         /** \brief Constructor
