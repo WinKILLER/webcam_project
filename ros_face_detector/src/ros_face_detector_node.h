@@ -35,6 +35,7 @@ class RosFaceDetectorNode
     image_transport::Subscriber image_subs_;
 
     //publishers
+    std_msgs::Float32MultiArray detect_msg_;
     ros::Publisher detector_publi;
 
     //pointer to received (in) and published (out) images
@@ -48,7 +49,7 @@ class RosFaceDetectorNode
 
     //face detector variables
     cv::CascadeClassifier face_detect_;
-    cv::Mat image_;
+    cv::Mat image_, gray_;
     std::vector<cv::Rect> faces_;
         
     protected: 

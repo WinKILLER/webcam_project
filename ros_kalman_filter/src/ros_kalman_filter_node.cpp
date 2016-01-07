@@ -4,45 +4,46 @@ using namespace Eigen;
 
 //SET KALMAN PARAMETERS
 // state vectors
-Eigen::Vector4f x_before;
-Eigen::Vector4f x_predicted;
-Eigen::Vector4f x_t;
+Eigen::Vector4d x_before;
+Eigen::Vector4d x_predicted;
+Eigen::Vector4d x_t;
 
 //noise state added
-Eigen::Matrix4f C_nx;
+Eigen::Matrix4d C_nx;
 double sigma_p_x = 10^2;
 double sigma_v_x = 5^2;
 
 //variance of the state
-Eigen::Matrix4f C_x;
-Eigen::Matrix4f C_x_predicted;
-Eigen::Matrix4f C_x_before;
+Eigen::Matrix4d C_x;
+Eigen::Matrix4d C_x_predicted;
+Eigen::Matrix4d C_x_before;
 
 //z_t = H*x_t + n_z
-Eigen::MatrixXf H(2, 4);
+Eigen::MatrixXd H(4,2);
+Eigen::MatrixXd H_inv(4,2);
+Eigen::MatrixXd H_T(2,4);
 
 //Measurements vectors
-Eigen::Vector2f z_t;
-Eigen::Vector2f z_predicted;
+Eigen::Vector2d z_t;
+Eigen::Vector2d z_predicted;
 //noise measurements added
-Eigen::Matrix2f C_nz;
+Eigen::Matrix2d C_nz;
 
 double sigma_nz;
 
 //x_t = F*x_before + nx
-Eigen::Matrix4f F;
+Eigen::Matrix4d F;
 double dT;
 double precTick;
 double ticks;
 
 Eigen::MatrixXd K(4,2);
-Eigen::Matrix4i I;
+Eigen::Matrix4d I;
 
 Eigen::Vector2d distance;
 
 double dist;
 
-std_msgs::Float32MultiArray msg;
 
 RosKalmanFilterNode::RosKalmanFilterNode():
     nh_(ros::this_node::getName())
@@ -52,6 +53,9 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     rate_=10;
 
     //set publishers
+    kalman_msg_.layout.dim[0].label = "states";
+    kalman_msg_.layout.dim[0].size = 4;
+
     kalman_publi = nh_.advertise<std_msgs::Float32MultiArray>("kalman_out", 100);
 
     //set subscribers
@@ -111,23 +115,26 @@ void RosKalmanFilterNode::prediction()
 void RosKalmanFilterNode::correction()
 {
     z_predicted = H * x_predicted;
+    H_T = H.transpose();
+
 
     if(distanceMalanovich() <= 7){
-        K = C_x_predicted * H.transpose() * (H * C_x_predicted * H.transpose() + C_nz);
+        K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
         x_t = x_predicted + K*(z_t - z_predicted);
 
-        Eigen::Matrix4f TEMP = (I - K * H);
+        Eigen::Matrix4d TEMP = (I - (K * H));
         C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
     }
 }
 
 double RosKalmanFilterNode::distanceMalanovich()
 {
-    Eigen::Vector2f error_z = z_t - z_predicted;
-    Eigen::Matrix2f TEMP = H * C_x * H.transpose();
-    Eigen::Matrix2f inverse = (C_nz + TEMP).inverse();
+    Eigen::Vector2d error_z = z_t - z_predicted;
+    Eigen::MatrixXd H_block = H.block<2,2>(0,0);
+    Eigen::Matrix2d TEMP = H_block * C_x * H_block.transpose();
+    Eigen::Matrix2d inverse = (C_nz + TEMP).inverse();
 
-    distance = (error_z * inverse) + error_z;
+    distance = (error_z.transpose() * inverse) + error_z.transpose();
 
     dist = (distance(0) + distance(1));
 
@@ -136,8 +143,14 @@ double RosKalmanFilterNode::distanceMalanovich()
 
 void RosKalmanFilterNode::publish()
 {
-    kalman_msg_ = x_t;
-    kalman_publi.publish(kal_msg_);
+    kalman_msg_.data.clear();
+
+    kalman_msg_.data[0] = (float)x_t[0];
+    kalman_msg_.data[1] = (float)x_t[1];
+    kalman_msg_.data[2] = (float)x_t[2];
+    kalman_msg_.data[3] = (float)x_t[3];
+
+    kalman_publi.publish(kalman_msg_);
 }
 
 double RosKalmanFilterNode::getRate()
@@ -145,7 +158,7 @@ double RosKalmanFilterNode::getRate()
     return rate_;
 }
 
-void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& msg)
+void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
 {
 
 

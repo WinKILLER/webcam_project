@@ -20,9 +20,8 @@ int main(int argc, char **argv)
             //execute pending callbacks
             ros::spinOnce();
 
-            //do things
+            //Detect faces
             face_detector.detect_face();
-
             
             //publish things
             face_detector.publish();
