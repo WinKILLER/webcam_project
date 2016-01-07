@@ -19,11 +19,11 @@
 /** \brief Simple Image Processor
  *
  * Simple Image Processor with opencv calls
- * 
+ *
  */
 class RosFaceDetectorNode
 {
-    protected: 
+protected:
 
     //ros node handle
     ros::NodeHandle nh_;
@@ -51,46 +51,46 @@ class RosFaceDetectorNode
     cv::CascadeClassifier face_detect_;
     cv::Mat image_, gray_;
     std::vector<cv::Rect> faces_;
-        
-    protected: 
-        // callbacks
-        void imageCallback(const sensor_msgs::ImageConstPtr& _msg);
 
-    public:
-        /** \brief Constructor
-        * 
-        * Constructor
-        * 
-        */
+protected:
+    // callbacks
+    void imageCallback(const sensor_msgs::ImageConstPtr& _msg);
 
-        RosFaceDetectorNode();
+public:
+    /** \brief Constructor
+    *
+    * Constructor
+    *
+    */
 
-        /** \brief Destructor
-        * 
-        * Destructor
-        * 
-        */
-        ~RosFaceDetectorNode();
+    RosFaceDetectorNode();
 
-        /** \brief Process input image
-        * 
-        * Process input image
-        * 
-        **/
-        void detect_face();
-                    
-        /** \brief Publish output image
-        * 
-        * Publish output image
-        * 
-        */
-        void publish();                              
-        
-        /** \brief Returns rate_
-         * 
-         * Returns rate_
-         * 
-         **/
-        double getRate() const;
+    /** \brief Destructor
+    *
+    * Destructor
+    *
+    */
+    ~RosFaceDetectorNode();
+
+    /** \brief Process input image
+    *
+    * Detects faces
+    *
+    **/
+    void detect_face();
+
+    /** \brief Publish output image
+    *
+    * Publish output image
+    *
+    */
+    void publish();
+
+    /** \brief Returns rate_
+     *
+     * Returns rate_
+     *
+     **/
+    double getRate() const;
 };
 #endif

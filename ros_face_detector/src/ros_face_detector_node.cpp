@@ -33,10 +33,10 @@ void RosFaceDetectorNode::detect_face()
 {
     if (cv_img_ptr_in_ != nullptr)
     {
-      //copy the input image to the out one
-      image_ = cv_img_ptr_in_->image;
-      cv::cvtColor(image_, gray_, CV_BGR2GRAY);
-      face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(50, 50), cv::Size(200,200));
+        //copy the input image to the out one
+        image_ = cv_img_ptr_in_->image;
+        cv::cvtColor(image_, gray_, CV_BGR2GRAY);
+        face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(50, 50), cv::Size(200,200));
     }
 }
 
@@ -46,12 +46,12 @@ void RosFaceDetectorNode::publish()
 
     if (faces_.size() > 0)
     {
-      ROS_INFO("Face detected at (%d,%d) (w=%d,h=%d)", faces_[0].x, faces_[0].y, faces_[0].width, faces_[0].height);
-      detect_msg_.data[0] = (float)faces_[0].x;
-      detect_msg_.data[1] = (float)faces_[0].y;
-      detect_msg_.data[2] = (float)faces_[0].width;
-      detect_msg_.data[3] = (float)faces_[0].height;
-      detector_publi.publish(detect_msg_);
+        ROS_INFO("Face detected at (%d,%d) (w=%d,h=%d)", faces_[0].x, faces_[0].y, faces_[0].width, faces_[0].height);
+        detect_msg_.data[0] = (float)faces_[0].x;
+        detect_msg_.data[1] = (float)faces_[0].y;
+        detect_msg_.data[2] = (float)faces_[0].width;
+        detect_msg_.data[3] = (float)faces_[0].height;
+        detector_publi.publish(detect_msg_);
     }
 }
 
