@@ -1,4 +1,5 @@
 #include "ros_img_processor_node.h"
+#include <ros/console.h>
 
 RosImgProcessorNode::RosImgProcessorNode() : 
     nh_(ros::this_node::getName()),
@@ -13,6 +14,9 @@ RosImgProcessorNode::RosImgProcessorNode() :
     //sets subscribers
     image_subs_ = img_tp_.subscribe("image_in", 1, &RosImgProcessorNode::imageCallback, this);
     camera_info_subs_ = nh_.subscribe("camera_info_in", 100, &RosImgProcessorNode::cameraInfoCallback, this);
+    detector_subs_ = nh_.subscribe("/ros_face_detector/detector_out", 100, &RosImgProcessorNode::detectorFacePixelsCallbacks, this);
+    kalman_subs_ = nh_.subscribe("/ros_kalman_filter/kalman_out", 100, &RosImgProcessorNode::kalmanFacePixelsCallbacks, this);
+
 }
 
 RosImgProcessorNode::~RosImgProcessorNode()
@@ -30,17 +34,16 @@ void RosImgProcessorNode::process()
         //copy the input image to the out one
         cv_img_out_.image = cv_img_ptr_in_->image;
         
-        //sets the bounding box of the detection jj
-        box.x = (cv_img_ptr_in_->image.cols/2)-10;
-        box.y = (cv_img_ptr_in_->image.rows/2)-10;
-        box.width = 20;
-        box.height = 20;
 
         //mark a rectangle in the center: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#rectangle
-        cv::rectangle(cv_img_out_.image, box, cv::Scalar(0,255,255), 3);
-        
-        //Mark an ellipse: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#ellipse
-        cv::ellipse(cv_img_out_.image,cv::Point(50,50),cv::Size(20,10),27,0,360,cv::Scalar(0,0,255),2);
+        if(box_detector_.x > 0){
+
+            cv::rectangle(cv_img_out_.image, box_detector_, cv::Scalar(0,0,255), 3);
+        }
+        if(box_kalman_.x >0){
+
+            cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(255,0,0), 3);
+        }
     }
     
     //reset input image
@@ -76,8 +79,43 @@ void RosImgProcessorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
     }      
 }
 
-void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo & _msg)
+void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo& _msg)
 {
     //
 }
 
+void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
+{
+    try{
+            box_detector_.x = (int)_msg -> data[0];
+            box_detector_.y = (int)_msg -> data[1];
+            box_detector_.width = (int)_msg -> data[2];
+            box_detector_.height = (int)_msg -> data[3];
+
+    }catch(ros::Exception& e)
+    {
+        ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
+        return;
+    }
+}
+
+void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
+{
+    try{
+
+        box_kalman_.x = (int)_msg -> data[0];
+        box_kalman_.y = (int)_msg -> data[1];
+
+        if(box_detector_.width != 0 && box_detector_.height != 0){
+            box_kalman_.width = box_detector_.width;
+            box_kalman_.height = box_kalman_.height;
+        }else{
+            box_kalman_.width = 20;
+            box_kalman_.height = 20;
+        }
+    }catch(ros::Exception& e)
+    {
+        ROS_ERROR("RosImgProcessorNode::kalmanFacePixelsCallbacks(): exception: %s", e.what());
+        return;
+    }
+}

@@ -8,6 +8,7 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
+#include <std_msgs/Float32MultiArray.h>
 
 /** \brief Simple Image Processor
  *
@@ -26,6 +27,8 @@ class RosImgProcessorNode
         // subscribers to the image and camera info topics
         image_transport::Subscriber image_subs_;
         ros::Subscriber camera_info_subs_;
+        ros::Subscriber detector_subs_;
+        ros::Subscriber kalman_subs_;
 
         //publishers
         image_transport::Publisher image_pub_;      
@@ -39,11 +42,17 @@ class RosImgProcessorNode
         
         //wished process rate, [hz]
         double rate_;
+
+        //variables for rectangles to print
+        cv::Rect_<int> box_detector_;
+        cv::Rect_<int> box_kalman_;
         
     protected: 
         // callbacks
         void imageCallback(const sensor_msgs::ImageConstPtr& _msg);
         void cameraInfoCallback(const sensor_msgs::CameraInfo & _msg);
+        void detectorFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg);
+        void kalmanFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg);
 
     public:
         /** \brief Constructor
