@@ -8,6 +8,7 @@
 #include "cv.h"
 
 //ROS headers for image I/O
+#include <ros/ros.h>
 #include <std_msgs/Float32MultiArray.h>
 
 class PidNode{
@@ -26,7 +27,7 @@ class PidNode{
 
     protected:
         //callbacks
-        void kalmanfiltercallback(const std_msgs::Float32MultiArray::ConstPtr& msg);
+        void kalmanfiltercallback(const std_msgs::Float32MultiArrayConstPtr& msg);
 
     public:
         /** \brief Constructor
@@ -48,7 +49,8 @@ class PidNode{
          * Prediction x(t) & Cx(t)
          *
          */
-         void convertVelocity();
+         float convertVelocity_X(float);
+         float convertVelocity_Y(float);
 
          /** \brief Convert the position error to velocity
           *

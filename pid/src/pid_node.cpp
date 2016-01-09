@@ -31,8 +31,31 @@ PidNode::~PidNode()
     //
 }
 
-void PidNode::convertVelocity(posx, posy, velx, vely)
+float PidNode::convertVelocity_Y(float posy)
 {
+  float vely;
+
+  //Passem l'error a velocitat. Depèn dels pixels que està, anem més ràpid o més lents (Y)
+  if (0 > posy < 239){          //girem motor esquerra
+      vely = 1/4 * posy;
+      vely = vely * -1; // Canviem el número de signe
+  }
+
+  if (241 > posy < 480){          //girem motor dreta
+      posy = posy - 240;
+      vely = 1/4 * posy;
+ }
+
+  if (posy == 320){ // No hi ha error. Aturem motor
+      vely = 0;
+  }
+
+  return vely;
+}
+
+float PidNode::convertVelocity_X(float posx)
+{
+    float velx;
     //Passem l'error a velocitat. Depèn dels pixels que està, anem més ràpid o més lents (X)
 
     if (0 > posx < 319){          //girem motor esquerra
@@ -49,38 +72,25 @@ void PidNode::convertVelocity(posx, posy, velx, vely)
         velx = 0;
     }
 
-    //Passem l'error a velocitat. Depèn dels pixels que està, anem més ràpid o més lents (Y)
-    if (0 > posy < 239){          //girem motor esquerra
-        vely = 1/4 * posy;
-        vely = vely * -1; // Canviem el número de signe
-    }
-
-    if (241 > posy < 480){          //girem motor dreta
-        posy = posy - 240;
-        vely = 1/4 * posy;
-   }
-
-    if (posy == 320){ // No hi ha error. Aturem motor
-        vely = 0;
-    }
+    return velx;
 }
 
 void PidNode::pid()
 {
     //PID
 
-    velocity_controllers::JointVelocityController vel_controller;
-    hardware_interface::JointHandle joint1;
-    control_toolbox::Pid pidx;
-    control_toolbox::Pid pidy;
-    hardware_interface::VelocityJointInterface hard_interface;
-
-    pidx.setGains(1,2,3,4,5);
-    joint1.name_ = "joint1";
-
-    hard_interface.getNames("world");
-    vel_controller.init(hard_interface, nh);
-    vel_controller.
+    // velocity_controllers::JointVelocityController vel_controller;
+    // hardware_interface::JointHandle joint1;
+    // control_toolbox::Pid pidx;
+    // control_toolbox::Pid pidy;
+    // hardware_interface::VelocityJointInterface hard_interface;
+    //
+    // pidx.setGains(1,2,3,4,5);
+    // //joint1.name_ = "joint1";
+    //
+    // hard_interface.getNames("world");
+    // vel_controller.init(hard_interface, nh);
+    // vel_controller.
 
      /*pid.initPid(6.0, 1.0, 2.0, 0.3, -0.3);
      double position_desi_ = 0.5;
@@ -103,12 +113,15 @@ void PidNode::publish()
     pid_msg_.data[1] = (float)vely;
 
     pid_publi.publish(pid_msg_);
-
-
 }
 
-double PidNode::getRate()
+double PidNode::getRate() const
 {
 
     return rate_;
+}
+
+void PidNode::kalmanfiltercallback(const std_msgs::Float32MultiArrayConstPtr& msg)
+{
+  std::cout << msg->data[0] << std::endl;
 }
