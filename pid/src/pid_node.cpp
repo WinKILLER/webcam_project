@@ -4,10 +4,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <kdl_conversions/kdl_msg.h>
-#include <velocity_controllers/joint_velocity_controller.h>
-#include <control_toolbox/pid.h>
-#include <hardware_interface/joint_command_interface.h>
+#include <pid/pid_header.h>
+
 
 float velx, vely, posx, posy;
 
@@ -79,28 +77,6 @@ void PidNode::pid()
 {
     //PID
 
-    // velocity_controllers::JointVelocityController vel_controller;
-    // hardware_interface::JointHandle joint1;
-    // control_toolbox::Pid pidx;
-    // control_toolbox::Pid pidy;
-    // hardware_interface::VelocityJointInterface hard_interface;
-    //
-    // pidx.setGains(1,2,3,4,5);
-    // //joint1.name_ = "joint1";
-    //
-    // hard_interface.getNames("world");
-    // vel_controller.init(hard_interface, nh);
-    // vel_controller.
-
-     /*pid.initPid(6.0, 1.0, 2.0, 0.3, -0.3);
-     double position_desi_ = 0.5;
-
-     ros::Time last_time = ros::Time::now();
-     while (true) {
-     ros::Time time = ros::Time::now();
-     double effort = pid.updatePid(currentPosition() - position_desi_, time - last_time);
-       last_time = time;
-       }*/
 
 }
 
