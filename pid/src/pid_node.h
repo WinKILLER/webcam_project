@@ -18,6 +18,7 @@ class PidNode{
         ros::Subscriber kalman_publi;
 
         //publisher
+        std_msgs::Float32MultiArray pid_msg_;
         ros::Publisher pid_publi;
 
         //wished process rate [hz]

@@ -9,6 +9,9 @@
 #include <control_toolbox/pid.h>
 #include <hardware_interface/joint_command_interface.h>
 
+float velx, vely, posx, posy;
+
+
 PidNode::PidNode():
     nh_(ros::this_node::getName())
 {
@@ -28,7 +31,7 @@ PidNode::~PidNode()
     //
 }
 
-void PidNode::convertVelocity(int posx, int posy, int velx, int vely)
+void PidNode::convertVelocity(posx, posy, velx, vely)
 {
     //Passem l'error a velocitat. Depèn dels pixels que està, anem més ràpid o més lents (X)
 
@@ -94,8 +97,12 @@ void PidNode::pid()
 void PidNode::publish()
 {
 
-    std_msgs::Float32MultiArray msg;
-    //msg.data(x_t);
+    pid_msg_.data.clear();
+
+    pid_msg_.data[0] = (float)velx;
+    pid_msg_.data[1] = (float)vely;
+
+    pid_publi.publish(pid_msg_);
 
 
 }
