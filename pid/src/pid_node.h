@@ -57,7 +57,8 @@ class PidNode{
           * Convert the position error to velocity
           *
           */
-         void pid();
+         void pid_X();
+         void pid_Y();
 
          /** \brief do the pid correction
           *

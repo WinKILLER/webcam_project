@@ -5,10 +5,19 @@
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <pid/pid_header.h>
+#include <control_toolbox/pid.h>
+
 
 
 float velx, vely, posx, posy;
+double velx_correction, vely_correction;
+double p = 1.0;
+double ii = 1.0;
+double d = 1.0;
+double i_max = 1.0;
+double i_min = 1.0;
 
+ros::Time time_of_last_cycle_;
 
 PidNode::PidNode():
     nh_(ros::this_node::getName())
@@ -48,6 +57,8 @@ float PidNode::convertVelocity_Y(float posy)
       vely = 0;
   }
 
+  time_of_last_cycle_ = ros::Time::now();
+
   return vely;
 }
 
@@ -70,12 +81,24 @@ float PidNode::convertVelocity_X(float posx)
         velx = 0;
     }
 
+    //time_of_last_cycle_ = robot_->getTime();
+    time_of_last_cycle_ = ros::Time::now();
+
     return velx;
 }
 
-void PidNode::pid()
+
+void PidNode::pid_X()
 {
     //PID
+    control_toolbox::Pid pid_x;
+
+    pid_x.initPid(p, ii, d, i_max, i_min);
+
+
+    ros::Duration dt = ros::Time::now() - time_of_last_cycle_;
+
+    velx_correction = pid_x.updatePid(velx, dt);
 
 
 }

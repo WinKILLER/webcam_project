@@ -23,7 +23,7 @@ int main(int argc, char **argv)
           pid.convertVelocity_Y(30);
 
           //PID
-          pid.pid();
+          pid.pid_X();
 
           //publish things
           pid.publish();
