@@ -106,6 +106,7 @@ RosKalmanFilterNode::~RosKalmanFilterNode()
 void RosKalmanFilterNode::prediction()
 {
 
+    std::cout << "Ping prediction" << std::endl;
     x_before = x_t;
     C_x_before = C_x;
     x_predicted = F * x_before;
@@ -121,7 +122,7 @@ void RosKalmanFilterNode::correction()
 {
     H_T = H.transpose();
     z_predicted = H * x_predicted;
-
+    std::cout << "Ping  correction" << std::endl;
     if(distanceMalanovich() <= 7){
 
         K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
@@ -130,15 +131,26 @@ void RosKalmanFilterNode::correction()
         Eigen::Matrix4d TEMP = (I - (K * H));
         C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
     }
+
+    std::cout << "Correction OUT" << std::endl;
 }
 
 double RosKalmanFilterNode::distanceMalanovich()
 {
+    std::cout << "Ping Malanovich 1" << std::endl;
     Eigen::Vector2d error_z = z_t - z_predicted;
+
+    std::cout << "Ping Malanovich 2" << std::endl;
     Eigen::MatrixXd H_block = H.block<2,2>(0,0);
-    Eigen::Matrix2d TEMP = H_block * C_x * H_block.transpose();
+    Eigen::MatrixXd C_x_block = C_x.block<2,2>(0,0);
+    std::cout << "Ping Malanovich 3" << std::endl;
+    Eigen::Matrix2d TEMP = H_block * C_x_block * H_block.transpose();
+
+
+    std::cout << "Ping Malanovich 4" << std::endl;
     Eigen::Matrix2d inverse = (C_nz + TEMP).inverse();
 
+    std::cout << "Ping Malanovich 5" << std::endl;
     distance = (error_z.transpose() * inverse) + error_z.transpose();
 
     dist = (distance(0) + distance(1));

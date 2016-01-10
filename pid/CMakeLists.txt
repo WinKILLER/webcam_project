@@ -13,6 +13,12 @@ find_package( catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(OpenCV REQUIRED)
 
+##Qt5 dependences dont know why.....IF NOT ERROR COMPILE
+find_package(Qt5Widgets)
+find_package(Qt5Test)
+find_package(Qt5Concurrent)
+find_package(Qt5OpenGL)
+
 #source files
 SET(SRCS 
       src/pid_node.cpp
