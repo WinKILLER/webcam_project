@@ -1,16 +1,16 @@
 #include "ros_img_processor_node.h"
 #include <ros/console.h>
 
-RosImgProcessorNode::RosImgProcessorNode() : 
+RosImgProcessorNode::RosImgProcessorNode() :
     nh_(ros::this_node::getName()),
     img_tp_(nh_)
 {
-    //loop rate [hz], Could be set from a yaml file 
-    rate_=10; 
-    
+    //loop rate [hz], Could be set from a yaml file
+    rate_=10;
+
     //sets publishers
     image_pub_ = img_tp_.advertise("image_out", 100);
-    
+
     //sets subscribers
     image_subs_ = img_tp_.subscribe("image_in", 1, &RosImgProcessorNode::imageCallback, this);
     camera_info_subs_ = nh_.subscribe("camera_info_in", 100, &RosImgProcessorNode::cameraInfoCallback, this);
@@ -27,13 +27,13 @@ RosImgProcessorNode::~RosImgProcessorNode()
 void RosImgProcessorNode::process()
 {
     cv::Rect_<int> box;
-    
+
     //check if new image is there
     if ( cv_img_ptr_in_ != nullptr )
     {
         //copy the input image to the out one
         cv_img_out_.image = cv_img_ptr_in_->image;
-        
+
 
         //mark a rectangle in the center: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#rectangle
         if(box_detector_.x > 0){
@@ -45,7 +45,7 @@ void RosImgProcessorNode::process()
             cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(255,0,0), 3);
         }
     }
-    
+
     //reset input image
     cv_img_ptr_in_ = nullptr;
 }
@@ -55,7 +55,7 @@ void RosImgProcessorNode::publish()
     //image_raw topic
     cv_img_out_.header.seq ++;
     cv_img_out_.header.stamp = ros::Time::now();
-    cv_img_out_.header.frame_id = "camera"; 
+    cv_img_out_.header.frame_id = "camera";
     cv_img_out_.encoding = img_encoding_;
     image_pub_.publish(cv_img_out_.toImageMsg());
 }
@@ -76,7 +76,7 @@ void RosImgProcessorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
     {
         ROS_ERROR("RosImgProcessorNode::image_callback(): cv_bridge exception: %s", e.what());
         return;
-    }      
+    }
 }
 
 void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo& _msg)
@@ -84,13 +84,22 @@ void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo& _msg
     //
 }
 
-void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
+void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
 {
     try{
-            box_detector_.x = (int)_msg -> data[0];
-            box_detector_.y = (int)_msg -> data[1];
-            box_detector_.width = (int)_msg -> data[2];
-            box_detector_.height = (int)_msg -> data[3];
+      ROS_INFO("LOL!");
+            // box_detector_.x = (int)_msg -> data[0];
+            // ROS_INFO("LOL! 2");
+            // box_detector_.y = (int)_msg -> data[1];
+            // ROS_INFO("LOL! 3");
+            // box_detector_.width = (int)_msg -> data[2];
+            // box_detector_.height = (int)_msg -> data[3];
+            // ROS_INFO("LOL! 4");
+          box_detector_.x = _msg -> data[0];
+          box_detector_.y = _msg -> data[1];
+          box_detector_.width = _msg -> data[2];
+          box_detector_.height = _msg -> data[3];
+
 
     }catch(ros::Exception& e)
     {
@@ -99,12 +108,12 @@ void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::Float32Mul
     }
 }
 
-void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
+void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
 {
     try{
 
-        box_kalman_.x = (int)_msg -> data[0];
-        box_kalman_.y = (int)_msg -> data[1];
+        box_kalman_.x = _msg -> data[0];
+        box_kalman_.y = _msg -> data[1];
 
         if(box_detector_.width != 0 && box_detector_.height != 0){
             box_kalman_.width = box_detector_.width;

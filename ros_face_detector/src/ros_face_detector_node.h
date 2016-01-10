@@ -14,7 +14,7 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <std_msgs/Float32MultiArray.h>
+#include <std_msgs/Int32MultiArray.h>
 
 /** \brief Simple Image Processor
  *
@@ -35,7 +35,7 @@ protected:
     image_transport::Subscriber image_subs_;
 
     //publishers
-    std_msgs::Float32MultiArray detect_msg_;
+    std_msgs::Int32MultiArray detect_msg_;
     ros::Publisher detector_publi;
 
     //pointer to received (in) and published (out) images
