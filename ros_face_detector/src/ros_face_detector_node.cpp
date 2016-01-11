@@ -14,10 +14,10 @@ RosFaceDetectorNode::RosFaceDetectorNode():
     detect_msg_.layout.dim[0].size = 4;
     detect_msg_.data.resize(4);
 
-    detector_publi = nh_.advertise<std_msgs::Int32MultiArray>("/ros_face_detector/detector_out",100);
+    detector_publi = nh_.advertise<std_msgs::UInt32MultiArray>("/ros_face_detector/detector_out",100);
 
     //sets subscribers
-    image_subs_ = img_tp_.subscribe("/ros_img_processor/image_out", 1, &RosFaceDetectorNode::imageCallback, this);
+    image_subs_ = img_tp_.subscribe("/ros_img_processor/image_out", 10, &RosFaceDetectorNode::imageCallback, this);
 
     //face detector init
     face_detect_.load("./src/webcam_project/ros_face_detector/filters/lbdcascade_frontlface.xml");
@@ -35,7 +35,7 @@ void RosFaceDetectorNode::detect_face()
         //copy the input image to the out one
         image_ = cv_img_ptr_in_->image;
         cv::cvtColor(image_, gray_, CV_BGR2GRAY);
-        face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(50, 50), cv::Size(200,200));
+        face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(48, 48), cv::Size(480,480));
     }
 }
 

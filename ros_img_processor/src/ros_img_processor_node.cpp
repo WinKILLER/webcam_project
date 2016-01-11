@@ -36,11 +36,11 @@ void RosImgProcessorNode::process()
 
 
         //mark a rectangle in the center: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#rectangle
-        if(box_detector_.x > 0){
+        if(box_detector_.x > 0) {
 
             cv::rectangle(cv_img_out_.image, box_detector_, cv::Scalar(0,0,255), 3);
         }
-        if(box_kalman_.x >0){
+        if(box_kalman_.x >0) {
 
             cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(255,0,0), 3);
         }
@@ -84,45 +84,45 @@ void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo& _msg
     //
 }
 
-void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
+void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg)
 {
-    try{
-      ROS_INFO("LOL!");
-            // box_detector_.x = (int)_msg -> data[0];
-            // ROS_INFO("LOL! 2");
-            // box_detector_.y = (int)_msg -> data[1];
-            // ROS_INFO("LOL! 3");
-            // box_detector_.width = (int)_msg -> data[2];
-            // box_detector_.height = (int)_msg -> data[3];
-            // ROS_INFO("LOL! 4");
-          box_detector_.x = _msg -> data[0];
-          box_detector_.y = _msg -> data[1];
-          box_detector_.width = _msg -> data[2];
-          box_detector_.height = _msg -> data[3];
+    try {
+        ROS_INFO("LOL!");
+        // box_detector_.x = (int)_msg -> data[0];
+        // ROS_INFO("LOL! 2");
+        // box_detector_.y = (int)_msg -> data[1];
+        // ROS_INFO("LOL! 3");
+        // box_detector_.width = (int)_msg -> data[2];
+        // box_detector_.height = (int)_msg -> data[3];
+        // ROS_INFO("LOL! 4");
+        box_detector_.x = _msg -> data[0];
+        box_detector_.y = _msg -> data[1];
+        box_detector_.width = _msg -> data[2];
+        box_detector_.height = _msg -> data[3];
 
 
-    }catch(ros::Exception& e)
+    } catch(ros::Exception& e)
     {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;
     }
 }
 
-void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
+void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg)
 {
-    try{
+    try {
 
         box_kalman_.x = _msg -> data[0];
         box_kalman_.y = _msg -> data[1];
 
-        if(box_detector_.width != 0 && box_detector_.height != 0){
+        if(box_detector_.width != 0 && box_detector_.height != 0) {
             box_kalman_.width = box_detector_.width;
-            box_kalman_.height = box_kalman_.height;
-        }else{
+            box_kalman_.height = box_detector_.height;
+        } else {
             box_kalman_.width = 20;
             box_kalman_.height = 20;
         }
-    }catch(ros::Exception& e)
+    } catch(ros::Exception& e)
     {
         ROS_ERROR("RosImgProcessorNode::kalmanFacePixelsCallbacks(): exception: %s", e.what());
         return;

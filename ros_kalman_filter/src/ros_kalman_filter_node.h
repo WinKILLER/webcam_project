@@ -18,73 +18,73 @@
 //ROS headers for image I/O
 #include <std_msgs/Int32MultiArray.h>
 
-class RosKalmanFilterNode{
-    protected:
-        ros::NodeHandle nh_;
+class RosKalmanFilterNode {
+protected:
+    ros::NodeHandle nh_;
 
-        //subscriber to faces detector topic
-        ros::Subscriber detected_pixels;
+    //subscriber to faces detector topic
+    ros::Subscriber detected_pixels;
 
-        //publisher
-        std_msgs::Int32MultiArray kalman_msg_;
-        ros::Publisher kalman_publi;
+    //publisher
+    std_msgs::Int32MultiArray kalman_msg_;
+    ros::Publisher kalman_publi;
 
-        //wished process rate [hz]
-        double rate_;
+    //wished process rate [hz]
+    double rate_;
 
-    protected:
-        //callbacks
-        void centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg);
+protected:
+    //callbacks
+    void centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg);
 
-    public:
-        /** \brief Constructor
-        *
-        * Constructor
-        *
-        */
-        RosKalmanFilterNode();
+public:
+    /** \brief Constructor
+    *
+    * Constructor
+    *
+    */
+    RosKalmanFilterNode();
 
-        /** \brief Destructor
-        *
-        * Destructor
-        *
-        */
-        ~RosKalmanFilterNode();
+    /** \brief Destructor
+    *
+    * Destructor
+    *
+    */
+    ~RosKalmanFilterNode();
 
-        /** \brief Prediction x(t) & Cx(t)
-         *
-         * Prediction x(t) & Cx(t)
-         *
-         */
-         void prediction();
+    /** \brief Prediction x(t) & Cx(t)
+     *
+     * Prediction x(t) & Cx(t)
+     *
+     */
+    void prediction();
 
-         /** \brief Correction part kalman filter
-          *
-          * Correction part kalman filter
-          *
-          */
-         void correction();
+    /** \brief Correction part kalman filter
+     *
+     * Correction part kalman filter
+     *
+     */
+    void correction();
 
-         /** \brief get distance Malanovich
-          *
-          * get distance Malanovich
-          *
-          */
-         double distanceMalanovich();
+    /** \brief get distance Malanovich
+     *
+     * get distance Malanovich
+     *
+     */
+    double distanceMalanovich();
 
-         /** \brief Publish kalman msg (center face pixel predicted)
-         *
-         * Publish kalman msg (center face pixel predicted)
-         *
-         */
-         void publish();
+    /** \brief Publish kalman msg (center face pixel predicted)
+    *
+    * Publish kalman msg (center face pixel predicted)
+    *
+    */
+    void publish();
 
-         /** \brief Returns rate_
-          *
-          * Returns rate_
-          *
-          **/
-         double getRate();
+    /** \brief Returns rate_
+     *
+     * Returns rate_
+     *
+     **/
+    double getRate();
 
 
 };

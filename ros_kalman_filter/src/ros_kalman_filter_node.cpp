@@ -56,10 +56,10 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     kalman_msg_.layout.dim[0].label = "kalman_states";
     kalman_msg_.layout.dim[0].size = 4;
     kalman_msg_.data.resize(4);
-    kalman_publi = nh_.advertise<std_msgs::Float32MultiArray>("kalman_out", 100);
+    kalman_publi = nh_.advertise<std_msgs::Int32MultiArray>("kalman_out", 100);
 
     //set subscribers
-    detected_pixels = nh_.subscribe("/ros_face_detector/detector_out", 1, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
+    detected_pixels = nh_.subscribe("/ros_face_detector/detector_out", 10, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
 
     x_predicted(0) = 320;
     x_predicted(1) = 240;
@@ -67,35 +67,35 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     x_predicted(3) = 0;
 
     C_nx << sigma_p_x, 0, 0, 0,
-            0, sigma_p_x, 0, 0,
-            0, 0, sigma_v_x, 0,
-            0, 0, 0, sigma_v_x;
+         0, sigma_p_x, 0, 0,
+         0, 0, sigma_v_x, 0,
+         0, 0, 0, sigma_v_x;
 
     C_x_before << 100, 0, 0, 0,
-            0, 10^2, 0, 0,
-            0, 0, 5^2, 0,
-            0, 0, 0, 5^2;
+               0, 10^2, 0, 0,
+               0, 0, 5^2, 0,
+               0, 0, 0, 5^2;
 
     H << 1, 0, 0, 0,
-         0, 1, 0, 0;
+    0, 1, 0, 0;
 
     sigma_nz = 20^2;
     C_nz << sigma_nz, 0,
-            0, sigma_nz;
+         0, sigma_nz;
 
     dT = 0;
     precTick = 0;
     ticks = 0;
 
     F << 1, 0, dT, 0,
-         0, 1, 0, dT,
-         0, 0, 1, 0,
-         0, 0, 0, 1;
+    0, 1, 0, dT,
+    0, 0, 1, 0,
+    0, 0, 0, 1;
 
     I << 1, 0, 0, 0,
-         0, 1, 0, 0,
-         0, 0, 1, 0,
-         0, 0, 0 ,1;
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0 ,1;
 }
 
 RosKalmanFilterNode::~RosKalmanFilterNode()
@@ -120,7 +120,7 @@ void RosKalmanFilterNode::correction()
 {
     H_T = H.transpose();
     z_predicted = H * x_predicted;
-    if(distanceMalanovich() <= 7){
+    if(distanceMalanovich() <= 7) {
 
         K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
         x_t = x_predicted + K*(z_t - z_predicted);
@@ -147,11 +147,12 @@ double RosKalmanFilterNode::distanceMalanovich()
 void RosKalmanFilterNode::publish()
 {
     kalman_msg_.data.clear();
+    kalman_msg_.data.resize(4);
 
-    kalman_msg_.data[0] = (float)x_t[0];
-    kalman_msg_.data[1] = (float)x_t[1];
-    kalman_msg_.data[2] = (float)x_t[2];
-    kalman_msg_.data[3] = (float)x_t[3];
+    kalman_msg_.data[0] = x_t[0];
+    kalman_msg_.data[1] = x_t[1];
+    kalman_msg_.data[2] = x_t[2];
+    kalman_msg_.data[3] = x_t[3];
 
     kalman_publi.publish(kalman_msg_);
 }
@@ -161,14 +162,15 @@ double RosKalmanFilterNode::getRate()
     return rate_;
 }
 
-void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Float32MultiArrayConstPtr& _msg)
+void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
 {
     try
     {
+        /* Ignore width and height */
         z_t[0] = _msg -> data[0];
         z_t[1] = _msg -> data[1];
-        z_t[2] = _msg -> data[2];
-        z_t[3] = _msg -> data[3];
+        // z_t[2] = _msg -> data[2];
+        // z_t[3] = _msg -> data[3];
     }
     catch (ros::Exception& e)
     {
