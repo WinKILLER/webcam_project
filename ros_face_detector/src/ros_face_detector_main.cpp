@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file        ros_face_detector_main.cpp
+ * @file        ros_faceDetector_main.cpp
  * @version     1.00
  * @date        1/01/2016
  * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
@@ -8,37 +8,68 @@
  ******************************************************************************
  */
 
+#define ROS_faceDetector_MAIN_C_
+
+/******************************************************************************
+ * MODULES USED
+ *****************************************************************************/
+
 #include "ros_face_detector_node.h"
 
-//node main
+/******************************************************************************
+ * DEFINITIONS AND MACROS
+ *****************************************************************************/
+
+/******************************************************************************
+ * TYPEDEFS AND STRUCTURES
+ *****************************************************************************/
+
+/******************************************************************************
+ * PROTOTYPES OF LOCAL FUNCTIONS
+ *****************************************************************************/
+
+/******************************************************************************
+ * LOCAL VARIABLES
+ *****************************************************************************/
+
+/******************************************************************************
+ * EXPORTED FUNCTIONS
+ *****************************************************************************/
+
+/******************************************************************************
+ * LOCAL FUNCTIONS
+ *****************************************************************************/
+
 int main(int argc, char **argv)
 {
-    //init ros
-    ros::init(argc, argv, "ros_face_detector");
+    // Init ros
+    ros::init(argc, argv, "ros_faceDetector");
 
-    //create ros wrapper object
-    RosFaceDetectorNode face_detector;  //no es darle un nombre, crea un objeto de dicha clase
+    // Create ros wrapper object
+    RosFaceDetectorNode faceDetector;
 
-    // double ratenode = imgp.getRate();
-    // set node loop rate
-    ros::Rate loopRate(face_detector.getRate());
+    // Set node loop rate
+    ros::Rate loopRate(faceDetector.getRate());
 
-
-    //node loop
+    // Node loop
     while ( ros::ok() ) {
-        //execute pending callbacks
+        // Execute pending callbacks
         ros::spinOnce();
 
-        //Detect faces
-        face_detector.detect_face();
+        // Detect faces
+        faceDetector.detectFace();
 
-        //publish things
-        face_detector.publish();
+        // Publish things
+        faceDetector.publish();
 
-        //relax to fit output rate
+        // Relax to fit output rate
         loopRate.sleep();
     }
 
-    //exit program
+    // Exit program
     return 0;
 }
+
+/******************************************************************************
+ * EOF
+ *****************************************************************************/

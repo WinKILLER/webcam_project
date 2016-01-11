@@ -11,6 +11,10 @@
 #ifndef ROS_FACE_DETECTOR_NODE_H
 #define ROS_FACE_DETECTOR_NODE_H
 
+/******************************************************************************
+ * MODULES USED
+ *****************************************************************************/
+
 #include "cv.h"
 #include "highgui.h"
 #include <iostream>
@@ -25,6 +29,14 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/UInt32MultiArray.h>
+
+/******************************************************************************
+ * DEFINITIONS AND MACROS
+ *****************************************************************************/
+
+/******************************************************************************
+ * TYPEDEFS AND STRUCTURES
+ *****************************************************************************/
 
 /** \brief Simple Image Processor
  *
@@ -67,40 +79,25 @@ protected:
     void imageCallback(const sensor_msgs::ImageConstPtr& _msg);
 
 public:
-    /** \brief Constructor
-    *
-    * Constructor
-    *
-    */
-
     RosFaceDetectorNode();
-
-    /** \brief Destructor
-    *
-    * Destructor
-    *
-    */
     ~RosFaceDetectorNode();
 
-    /** \brief Process input image
-    *
-    * Detects faces
-    *
-    **/
-    void detect_face();
-
-    /** \brief Publish output image
-    *
-    * Publish output image
-    *
-    */
     void publish();
-
-    /** \brief Returns rate_
-     *
-     * Returns rate_
-     *
-     **/
     double getRate() const;
+
+    void detectFace();
 };
-#endif
+
+/******************************************************************************
+ * EXPORTED VARIABLES
+ *****************************************************************************/
+
+/******************************************************************************
+ * EXPORTED FUNCTIONS
+ *****************************************************************************/
+
+#endif /* ROS_FACE_DETECTOR_NODE_H */
+
+/******************************************************************************
+ * EOF
+ *****************************************************************************/

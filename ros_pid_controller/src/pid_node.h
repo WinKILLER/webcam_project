@@ -3,7 +3,7 @@
  * @file        pid_node.h
  * @version     1.00
  * @date        1/01/2016
- * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @author      Brett Beauregard, Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
  * @brief       ROS PID node (header).
  ******************************************************************************
  */
@@ -73,19 +73,8 @@ protected:
     void kalmanfiltercallback(const std_msgs::UInt32MultiArrayConstPtr& msg);
 
 public:
-    /** \brief Constructor
-    *
-    * Constructor
-    *
-    */
     PidNode(double*, double*, double*,        // * constructor.  links the PID to the Input, Output, and
             double, double, double, int);     //   Setpoint.  Initial tuning parameters are also set here
-
-    /** \brief Destructor
-    *
-    * Destructor
-    *
-    */
     ~PidNode();
 
     void SetMode(int Mode);               // * sets PID to either Manual (0) or Auto (non-0)
@@ -117,19 +106,7 @@ public:
     int GetMode();						  //  inside the PID.
     int GetDirection();					  //
 
-    /** \brief do the pid correction
-     *
-     * do the pid correction
-     *
-     */
-
     void publish();
-
-    /** \brief Returns rate_
-     *
-     * Returns rate_
-     *
-     **/
     double getRate() const;
 };
 
