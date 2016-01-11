@@ -43,7 +43,7 @@
 int main(int argc, char **argv)
 {
     // Init ros
-    ros::init(argc, argv, "ros_faceDetector");
+    ros::init(argc, argv, "ros_face_detector");
 
     // Create ros wrapper object
     RosFaceDetectorNode faceDetector;
