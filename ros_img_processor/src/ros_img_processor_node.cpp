@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        ros_img_processor_node.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Andreu Corominas, Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS image processor node.
+ ******************************************************************************
+ */
+
 #include "ros_img_processor_node.h"
 #include <ros/console.h>
 
@@ -29,8 +39,7 @@ void RosImgProcessorNode::process()
     cv::Rect_<int> box;
 
     //check if new image is there
-    if ( cv_img_ptr_in_ != nullptr )
-    {
+    if ( cv_img_ptr_in_ != nullptr ) {
         //copy the input image to the out one
         cv_img_out_.image = cv_img_ptr_in_->image;
 
@@ -67,13 +76,10 @@ double RosImgProcessorNode::getRate() const
 
 void RosImgProcessorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
 {
-    try
-    {
+    try {
         img_encoding_ = _msg->encoding;//get image encodings
         cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
-    }
-    catch (cv_bridge::Exception& e)
-    {
+    } catch (cv_bridge::Exception& e) {
         ROS_ERROR("RosImgProcessorNode::image_callback(): cv_bridge exception: %s", e.what());
         return;
     }
@@ -87,22 +93,13 @@ void RosImgProcessorNode::cameraInfoCallback(const sensor_msgs::CameraInfo& _msg
 void RosImgProcessorNode::detectorFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg)
 {
     try {
-        ROS_INFO("LOL!");
-        // box_detector_.x = (int)_msg -> data[0];
-        // ROS_INFO("LOL! 2");
-        // box_detector_.y = (int)_msg -> data[1];
-        // ROS_INFO("LOL! 3");
-        // box_detector_.width = (int)_msg -> data[2];
-        // box_detector_.height = (int)_msg -> data[3];
-        // ROS_INFO("LOL! 4");
         box_detector_.x = _msg -> data[0];
         box_detector_.y = _msg -> data[1];
         box_detector_.width = _msg -> data[2];
         box_detector_.height = _msg -> data[3];
 
 
-    } catch(ros::Exception& e)
-    {
+    } catch(ros::Exception& e) {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;
     }
@@ -122,8 +119,7 @@ void RosImgProcessorNode::kalmanFacePixelsCallbacks(const std_msgs::UInt32MultiA
             box_kalman_.width = 20;
             box_kalman_.height = 20;
         }
-    } catch(ros::Exception& e)
-    {
+    } catch(ros::Exception& e) {
         ROS_ERROR("RosImgProcessorNode::kalmanFacePixelsCallbacks(): exception: %s", e.what());
         return;
     }

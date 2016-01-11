@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package>
-    <name>pid</name>
+    <name>ros_pid_controller</name>
     <version>0.0.0</version>
     <description>
-        Kalman filter for predict center pixels and velocity of an object in image.
+        PID controller to handle servo position based on face center
     </description>
 
-    <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+    <!-- One maintainer tag required, multiple allowed, one person per tag -->
     <maintainer email="carles.oro26@gmail.com">Carles Oro</maintainer>
 
     <!-- One license tag required, multiple allowed, one license per tag -->
@@ -24,7 +24,7 @@
     <build_depend>roscpp</build_depend>
     <build_depend>rospy</build_depend>
     <build_depend>std_msgs</build_depend>
-    
+
     <run_depend>roscpp</run_depend>
     <run_depend>rospy</run_depend>
     <run_depend>std_msgs</run_depend>

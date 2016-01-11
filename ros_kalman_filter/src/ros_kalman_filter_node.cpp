@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        ros_kalman_filter_node.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS Kalman filter node.
+ ******************************************************************************
+ */
+
 #include "ros_kalman_filter_node.h"
 
 using namespace Eigen;
@@ -53,7 +63,7 @@ RosKalmanFilterNode::RosKalmanFilterNode():
 
     //set publishers
     kalman_msg_.layout.dim.resize(1);
-    kalman_msg_.layout.dim[0].label = "kalman_states";
+    kalman_msg_.layout.dim[0].label = "face_position_kalman";
     kalman_msg_.layout.dim[0].size = 4;
     kalman_msg_.data.resize(4);
     kalman_publi = nh_.advertise<std_msgs::Int32MultiArray>("kalman_out", 100);
@@ -164,16 +174,13 @@ double RosKalmanFilterNode::getRate()
 
 void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
 {
-    try
-    {
+    try {
         /* Ignore width and height */
         z_t[0] = _msg -> data[0];
         z_t[1] = _msg -> data[1];
         // z_t[2] = _msg -> data[2];
         // z_t[3] = _msg -> data[3];
-    }
-    catch (ros::Exception& e)
-    {
+    } catch (ros::Exception& e) {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;
     }

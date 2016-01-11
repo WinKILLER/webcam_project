@@ -6,8 +6,8 @@
         Just a simple template node receivng an image and doing something. Links to OpenCV and ROS wrapped.
     </description>
 
-    <!-- One maintainer tag required, multiple allowed, one person per tag --> 
-    <maintainer email="oriolorraserra@gmail.com">Andreu Corominas Murtra</maintainer>
+    <!-- One maintainer tag required, multiple allowed, one person per tag -->
+    <maintainer email="oriolorraserra@gmail.com">Oriol Orra Serra</maintainer>
 
     <!-- One license tag required, multiple allowed, one license per tag -->
     <license>BSD</license>
@@ -25,10 +25,10 @@
     <build_depend>rospy</build_depend>
     <build_depend>image_transport</build_depend>
     <build_depend>cv_bridge</build_depend>
-    
+
     <run_depend>roscpp</run_depend>
     <run_depend>rospy</run_depend>
     <run_depend>image_transport</run_depend>
-    <run_depend>cv_bridge</run_depend> 
+    <run_depend>cv_bridge</run_depend>
 
 </package>

@@ -1,7 +1,14 @@
-#include "pid_node.h"
+/**
+ ******************************************************************************
+ * @file        pid_node.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS PID node.
+ ******************************************************************************
+ */
 
-//ROS includes
-#include <ros/ros.h>
+#include "pid_node.h"
 
 PidNode::PidNode(double* Input, double* Output, double* Setpoint,
                  double Kp, double Ki, double Kd, int ControllerDirection):
@@ -12,7 +19,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
 
     //sets publishers
     pid_msg_.layout.dim.resize(1);
-    pid_msg_.layout.dim[0].label = "pid_values";
+    pid_msg_.layout.dim[0].label = "servo_pid_values";
     pid_msg_.layout.dim[0].size = 1;
     pid_msg_.data.resize(1);
 
@@ -47,8 +54,7 @@ bool PidNode::Compute()
     if(!inAuto) return false;
     double now = ros::Time::now().toSec();
     double timeChange = (now - lastTime);
-    if(timeChange>=SampleTime)
-    {
+    if(timeChange>=SampleTime) {
         /*Compute all the working error variables*/
         double input = *myInput;
         double error = *mySetpoint - input;
@@ -68,8 +74,7 @@ bool PidNode::Compute()
         lastInput = input;
         lastTime = now;
         return true;
-    }
-    else return false;
+    } else return false;
 }
 
 void PidNode::SetTunings(double Kp, double Ki, double Kd)
@@ -84,8 +89,7 @@ void PidNode::SetTunings(double Kp, double Ki, double Kd)
     ki = Ki * SampleTime;
     kd = Kd / SampleTime;
 
-    if(controllerDirection == REVERSE)
-    {
+    if(controllerDirection == REVERSE) {
         kp = (0 - kp);
         ki = (0 - ki);
         kd = (0 - kd);
@@ -94,8 +98,7 @@ void PidNode::SetTunings(double Kp, double Ki, double Kd)
 
 void PidNode::SetSampleTime(int NewSampleTime)
 {
-    if (NewSampleTime > 0)
-    {
+    if (NewSampleTime > 0) {
         double ratio  = (double)NewSampleTime
                         / (double)SampleTime;
         ki *= ratio;
@@ -110,8 +113,7 @@ void PidNode::SetOutputLimits(double Min, double Max)
     outMin = Min;
     outMax = Max;
 
-    if(inAuto)
-    {
+    if(inAuto) {
         if(*myOutput > outMax) *myOutput = outMax;
         else if(*myOutput < outMin) *myOutput = outMin;
 
@@ -123,8 +125,8 @@ void PidNode::SetOutputLimits(double Min, double Max)
 void PidNode::SetMode(int Mode)
 {
     bool newAuto = (Mode == AUTOMATIC);
-    if(newAuto == !inAuto)
-    {   /*we just went from manual to auto*/
+    if(newAuto == !inAuto) {
+        /*we just went from manual to auto*/
         PidNode::Initialize();
     }
     inAuto = newAuto;
@@ -140,8 +142,7 @@ void PidNode::Initialize()
 
 void PidNode::SetControllerDirection(int Direction)
 {
-    if(inAuto && Direction !=controllerDirection)
-    {
+    if(inAuto && Direction !=controllerDirection) {
         kp = (0 - kp);
         ki = (0 - ki);
         kd = (0 - kd);
@@ -149,19 +150,24 @@ void PidNode::SetControllerDirection(int Direction)
     controllerDirection = Direction;
 }
 
-double PidNode::GetKp() {
+double PidNode::GetKp()
+{
     return  dispKp;
 }
-double PidNode::GetKi() {
+double PidNode::GetKi()
+{
     return  dispKi;
 }
-double PidNode::GetKd() {
+double PidNode::GetKd()
+{
     return  dispKd;
 }
-int PidNode::GetMode() {
+int PidNode::GetMode()
+{
     return  inAuto ? AUTOMATIC : MANUAL;
 }
-int PidNode::GetDirection() {
+int PidNode::GetDirection()
+{
     return controllerDirection;
 }
 
@@ -182,7 +188,6 @@ double PidNode::getRate() const
 
 void PidNode::kalmanfiltercallback(const std_msgs::UInt32MultiArrayConstPtr& msg)
 {
-    ROS_INFO("%d", msg->data[0]);
-    double center = msg->data[0] + msg->data[2]/2;
-    *myInput = center;
+    double horizontalCenter = msg->data[0] + msg->data[2]/2;
+    *myInput = horizontalCenter;
 }

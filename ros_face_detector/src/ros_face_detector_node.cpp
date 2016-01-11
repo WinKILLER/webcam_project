@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        ros_face_detector_node.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS face detection node.
+ ******************************************************************************
+ */
+
 #include "ros_face_detector_node.h"
 #include <ros/console.h>
 
@@ -10,7 +20,7 @@ RosFaceDetectorNode::RosFaceDetectorNode():
 
     //sets publishers
     detect_msg_.layout.dim.resize(1);
-    detect_msg_.layout.dim[0].label = "faces_detected";
+    detect_msg_.layout.dim[0].label = "face_position";
     detect_msg_.layout.dim[0].size = 4;
     detect_msg_.data.resize(4);
 
@@ -30,8 +40,7 @@ RosFaceDetectorNode::~RosFaceDetectorNode()
 
 void RosFaceDetectorNode::detect_face()
 {
-    if (cv_img_ptr_in_ != nullptr)
-    {
+    if (cv_img_ptr_in_ != nullptr) {
         //copy the input image to the out one
         image_ = cv_img_ptr_in_->image;
         cv::cvtColor(image_, gray_, CV_BGR2GRAY);
@@ -44,8 +53,7 @@ void RosFaceDetectorNode::publish()
     detect_msg_.data.clear();
     detect_msg_.data.resize(4);
 
-    if (faces_.size() > 0)
-    {
+    if (faces_.size() > 0) {
         detect_msg_.data[0] = faces_[0].x;
         detect_msg_.data[1] = faces_[0].y;
         detect_msg_.data[2] = faces_[0].width;
@@ -61,13 +69,10 @@ double RosFaceDetectorNode::getRate() const
 
 void RosFaceDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
 {
-    try
-    {
+    try {
         img_encoding_ = _msg->encoding;//get image encodings
         cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
-    }
-    catch (cv_bridge::Exception& e)
-    {
+    } catch (cv_bridge::Exception& e) {
         ROS_ERROR("RosImgProcessorNode::image_callback(): cv_bridge exception: %s", e.what());
         return;
     }

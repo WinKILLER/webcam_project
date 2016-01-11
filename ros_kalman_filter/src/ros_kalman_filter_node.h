@@ -1,10 +1,19 @@
+/**
+ ******************************************************************************
+ * @file        ros_kalman_filter_node.h
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS Kalman filter node (header).
+ ******************************************************************************
+ */
+
 #ifndef ROS_KALMAN_FILTER_NODE_H
 #define ROS_KALMAN_FILTER_NODE_H
 
 //Eigen
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
-
 
 //ROS
 #include <ros/ros.h>
@@ -18,7 +27,8 @@
 //ROS headers for image I/O
 #include <std_msgs/Int32MultiArray.h>
 
-class RosKalmanFilterNode {
+class RosKalmanFilterNode
+{
 protected:
     ros::NodeHandle nh_;
 

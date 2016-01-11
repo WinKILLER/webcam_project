@@ -1,5 +1,15 @@
-#ifndef ros_img_processor_node_H
-#define ros_img_processor_node_H
+/**
+ ******************************************************************************
+ * @file        ros_img_processor_node.h
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Andreu Corominas, Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS image processor node (header).
+ ******************************************************************************
+ */
+
+#ifndef ROS_IMG_PROCESSOR_NODE_H
+#define ROS_IMG_PROCESSOR_NODE_H
 
 //std C++
 #include <iostream>

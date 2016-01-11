@@ -1,3 +1,12 @@
+/**
+ ******************************************************************************
+ * @file        ros_img_processor_main.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Andreu Corominas, Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       Main ROS app to control image processor node.
+ ******************************************************************************
+ */
 
 //ros dependencies
 #include "ros_img_processor_node.h"
@@ -15,8 +24,7 @@ int main(int argc, char **argv)
     ros::Rate loopRate(imgp.getRate());
 
     //node loop
-    while ( ros::ok() )
-    {
+    while ( ros::ok() ) {
         //execute pending callbacks
         ros::spinOnce();
 

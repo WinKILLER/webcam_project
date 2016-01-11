@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        ros_face_detector_main.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       Main ROS app to control face detection node.
+ ******************************************************************************
+ */
+
 #include "ros_face_detector_node.h"
 
 //node main
@@ -15,8 +25,7 @@ int main(int argc, char **argv)
 
 
     //node loop
-    while ( ros::ok() )
-    {
+    while ( ros::ok() ) {
         //execute pending callbacks
         ros::spinOnce();
 

@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(pid)
+project(ros_pid_controller)
 
 #set C++11 support
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 ## Find catkin macros and libraries
-find_package( catkin REQUIRED COMPONENTS 
+find_package( catkin REQUIRED COMPONENTS
       roscpp
       rospy
       std_msgs)
@@ -20,27 +20,27 @@ find_package(Qt5Concurrent)
 find_package(Qt5OpenGL)
 
 #source files
-SET(SRCS 
+SET(SRCS
       src/pid_node.cpp
       src/pid_main.cpp)
 
 ## The catkin_package macro generates cmake config files for your package
 catkin_package(
-      CATKIN_DEPENDS 
-            roscpp 
-            rospy 
+      CATKIN_DEPENDS
+            roscpp
+            rospy
             std_msgs)
 
 ## Specify additional locations of header files
 include_directories(${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
 ## Declare a cpp executable for pipol_tracker_node
-add_executable(pid ${SRCS})
+add_executable(ros_pid_controller ${SRCS})
 #add_dependencies(pipol_tracker_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
-target_link_libraries(pid ${OpenCV_LIBS} ${catkin_LIBRARIES})
+target_link_libraries(ros_pid_controller ${OpenCV_LIBS} ${catkin_LIBRARIES})
 
 #install binaries
-install(TARGETS pid
+install(TARGETS ros_pid_controller
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #Share launch and configs

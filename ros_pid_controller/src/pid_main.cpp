@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        pid_main.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       Main ROS app to control PID node.
+ ******************************************************************************
+ */
+
 #include <stdio.h>
 #include "pid_node.h"
 
@@ -19,8 +29,7 @@ int main(int argc, char **argv)
     ros::Rate loopRate(pid.getRate());
 
     //node loop
-    while ( ros::ok() )
-    {
+    while ( ros::ok() ) {
         //execute pending callbacks
         ros::spinOnce();
 

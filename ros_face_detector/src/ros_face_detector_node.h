@@ -1,5 +1,15 @@
-#ifndef ros_face_detector_node_H
-#define ros_face_detector_node_H
+/**
+ ******************************************************************************
+ * @file        ros_face_detector_node.h
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS face detection node (header).
+ ******************************************************************************
+ */
+
+#ifndef ROS_FACE_DETECTOR_NODE_H
+#define ROS_FACE_DETECTOR_NODE_H
 
 #include "cv.h"
 #include "highgui.h"

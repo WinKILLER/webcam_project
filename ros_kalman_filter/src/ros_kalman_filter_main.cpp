@@ -1,3 +1,13 @@
+/**
+ ******************************************************************************
+ * @file        ros_kalman_filter_main.cpp
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       Main ROS app to control Kalman filter node.
+ ******************************************************************************
+ */
+
 #include <iostream>
 
 //ros dependencies
@@ -16,8 +26,7 @@ int main(int argc, char **argv)
     ros::Rate loopRate(kalman_filter.getRate());
 
     //node loop
-    while ( ros::ok() )
-    {
+    while ( ros::ok() ) {
 
         //execute pending callbacks
         ros::spinOnce();
@@ -44,4 +53,3 @@ int main(int argc, char **argv)
     //exit program
     return 0;
 }
-

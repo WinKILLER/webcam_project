@@ -1,25 +1,47 @@
+/**
+ ******************************************************************************
+ * @file        pid_node.h
+ * @version     1.00
+ * @date        1/01/2016
+ * @author      Carles Oró, Oriol Orra, Ismael Rodríguez, Juan Pedro López
+ * @brief       ROS PID node (header).
+ ******************************************************************************
+ */
+
 #ifndef PID_NODE_H
 #define PID_NODE_H
 
-//std C++
-#include <iostream>
+/******************************************************************************
+ * MODULES USED
+ *****************************************************************************/
 
-//ROS headers for image I/O
+#include <iostream>
 #include <ros/ros.h>
 #include <std_msgs/UInt32MultiArray.h>
 
-class PidNode {
+/******************************************************************************
+ * DEFINITIONS AND MACROS
+ *****************************************************************************/
+
+#define AUTOMATIC	1
+#define MANUAL	0
+#define DIRECT  0
+#define REVERSE  1
+
+/******************************************************************************
+* TYPEDEFS AND STRUCTURES
+*****************************************************************************/
+
+class PidNode
+{
 protected:
     ros::NodeHandle nh_;
 
-    //subscriber to kalman filter
     ros::Subscriber kalman_subscriber;
 
-    //publisher
     std_msgs::UInt32MultiArray pid_msg_;
     ros::Publisher pid_publi;
 
-    //wished process rate [hz]
     double rate_;
 
     void Initialize();
@@ -34,9 +56,9 @@ protected:
 
     int controllerDirection;
 
-    double *myInput;              // * Pointers to the Input, Output, and Setpoint variables
-    double *myOutput;             //   This creates a hard link between the variables and the
-    double *mySetpoint;           //   PID, freeing the user from having to constantly tell us
+    double *myInput;        // * Pointers to the Input, Output, and Setpoint variables
+    double *myOutput;       //   This creates a hard link between the variables and the
+    double *mySetpoint;     //   PID, freeing the user from having to constantly tell us
     //   what these values are.  with pointers we'll just know.
 
     double lastTime;
@@ -51,12 +73,6 @@ protected:
     void kalmanfiltercallback(const std_msgs::UInt32MultiArrayConstPtr& msg);
 
 public:
-    //Constants used in some of the functions below
-#define AUTOMATIC	1
-#define MANUAL	0
-#define DIRECT  0
-#define REVERSE  1
-
     /** \brief Constructor
     *
     * Constructor
@@ -117,5 +133,16 @@ public:
     double getRate() const;
 };
 
+/******************************************************************************
+ * EXPORTED VARIABLES
+ *****************************************************************************/
+
+/******************************************************************************
+ * EXPORTED FUNCTIONS
+ *****************************************************************************/
 
 #endif // PID_NODE_H
+
+/******************************************************************************
+ * EOF
+ *****************************************************************************/
