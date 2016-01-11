@@ -178,7 +178,6 @@ double RosKalmanFilterNode::distanceMalanovich()
     distance = (error_z.transpose() * inverse) + error_z.transpose();
     dist = (distance(0) + distance(1));
 
-    std::cout << distance[0] << "----" << distance[1] << std::endl;
     return dist;
 }
 
@@ -210,7 +209,6 @@ void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::UInt32MultiA
         z_t[1] = _msg -> data[1];
         // z_t[2] = _msg -> data[2];
         // z_t[3] = _msg -> data[3];
-        std::cout << z_t << std::endl;
     } catch (ros::Exception& e) {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;
