@@ -158,14 +158,13 @@ void RosKalmanFilterNode::correction()
 {
     H_T = H.transpose();
     z_predicted = H * x_predicted;
-    if(distanceMalanovich() <= 7) {
 
-        K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
-        x_t = x_predicted + K*(z_t - z_predicted);
+    K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
+    x_t = x_predicted + K*(z_t - z_predicted);
 
-        Eigen::Matrix4d TEMP = (I - (K * H));
-        C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
-    }
+    Eigen::Matrix4d TEMP = (I - (K * H));
+    C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
+
 }
 
 double RosKalmanFilterNode::distanceMalanovich()
@@ -179,6 +178,7 @@ double RosKalmanFilterNode::distanceMalanovich()
     distance = (error_z.transpose() * inverse) + error_z.transpose();
     dist = (distance(0) + distance(1));
 
+    std::cout << distance[0] << "----" << distance[1] << std::endl;
     return dist;
 }
 
@@ -193,6 +193,7 @@ void RosKalmanFilterNode::publish()
     kalman_msg_.data[3] = (uint)x_t[3];
 
     std::cout << x_t << std::endl;
+
     kalman_publi.publish(kalman_msg_);
 }
 
@@ -209,6 +210,7 @@ void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::UInt32MultiA
         z_t[1] = _msg -> data[1];
         // z_t[2] = _msg -> data[2];
         // z_t[3] = _msg -> data[3];
+        std::cout << z_t << std::endl;
     } catch (ros::Exception& e) {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;
