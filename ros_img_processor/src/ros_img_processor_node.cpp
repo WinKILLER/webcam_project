@@ -73,14 +73,13 @@ void RosImgProcessorNode::process()
         //copy the input image to the out one
         cv_img_out_.image = cv_img_ptr_in_->image;
 
-
         //mark a rectangle in the center: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#rectangle
         if(box_detector_.x > 0) {
-
+            std::cout << "detector rect" << std::endl;
             cv::rectangle(cv_img_out_.image, box_detector_, cv::Scalar(0,0,255), 3);
         }
         if(box_kalman_.x >0) {
-
+            std::cout << "kalman rect" << std::endl;
             cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(255,0,0), 3);
         }
     }

@@ -29,7 +29,7 @@
 #include <opencv/cv.h>
 
 //ROS headers for image I/O
-#include <std_msgs/Int32MultiArray.h>
+#include <std_msgs/UInt32MultiArray.h>
 
 /******************************************************************************
  * DEFINITIONS AND MACROS
@@ -48,7 +48,7 @@ protected:
     ros::Subscriber detected_pixels;
 
     //publisher
-    std_msgs::Int32MultiArray kalman_msg_;
+    std_msgs::UInt32MultiArray kalman_msg_;
     ros::Publisher kalman_publi;
 
     //wished process rate [hz]
@@ -56,7 +56,7 @@ protected:
 
 protected:
     //callbacks
-    void centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg);
+    void centerFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg);
 
 public:
     /** \brief Constructor

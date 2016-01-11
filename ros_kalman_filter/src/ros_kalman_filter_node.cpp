@@ -94,7 +94,7 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     kalman_msg_.layout.dim[0].label = "face_position_kalman";
     kalman_msg_.layout.dim[0].size = 4;
     kalman_msg_.data.resize(4);
-    kalman_publi = nh_.advertise<std_msgs::Int32MultiArray>("kalman_out", 100);
+    kalman_publi = nh_.advertise<std_msgs::UInt32MultiArray>("kalman_out", 100);
 
     //set subscribers
     detected_pixels = nh_.subscribe("/ros_face_detector/detector_out", 10, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
@@ -187,11 +187,12 @@ void RosKalmanFilterNode::publish()
     kalman_msg_.data.clear();
     kalman_msg_.data.resize(4);
 
-    kalman_msg_.data[0] = x_t[0];
-    kalman_msg_.data[1] = x_t[1];
-    kalman_msg_.data[2] = x_t[2];
-    kalman_msg_.data[3] = x_t[3];
+    kalman_msg_.data[0] = (uint)x_t[0];
+    kalman_msg_.data[1] = (uint)x_t[1];
+    kalman_msg_.data[2] = (uint)x_t[2];
+    kalman_msg_.data[3] = (uint)x_t[3];
 
+    std::cout << x_t << std::endl;
     kalman_publi.publish(kalman_msg_);
 }
 
@@ -200,7 +201,7 @@ double RosKalmanFilterNode::getRate()
     return rate_;
 }
 
-void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::Int32MultiArrayConstPtr& _msg)
+void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg)
 {
     try {
         /* Ignore width and height */
