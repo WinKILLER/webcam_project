@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     double Input, Output, Setpoint;
 
     //create ros wrapper object
-    PidNode pid(&Input, &Output, &Setpoint,2,5,1, DIRECT);
+    PidNode pid(&Input, &Output, &Setpoint,2,5,1, REVERSE);
 
     Setpoint = 320;
 
