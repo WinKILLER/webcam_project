@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "ros_face_detector");
 
     // Create ros wrapper object
-    RosFaceDetectorNode faceDetector;
+    RosFaceDetectorNode faceDetector(argv[1]);
 
     // Set node loop rate
     ros::Rate loopRate(faceDetector.getRate());

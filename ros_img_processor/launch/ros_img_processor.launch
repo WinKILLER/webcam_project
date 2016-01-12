@@ -13,17 +13,20 @@
         args="1">
         <remap from="/ros_img_processor/image_in" to="/usb_cam/image_raw"/>
     </node>
-    
+
     <!--Image window for output image -->
-    <node 
-        name="image_view_out" 
-        pkg="image_view" 
-        type="image_view" 
-        respawn="false" 
+    <node
+        name="image_view_out"
+        pkg="image_view"
+        type="image_view"
+        respawn="false"
         output="screen">
         <remap from="image" to="/ros_img_processor/image_out"/>
         <param name="autosize" value="true" />
     </node>
 
-</launch>
+    <node pkg="ros_face_detector" name="ros_face_detector" type="ros_face_detector" output="screen" args="$(find ros_face_detector)/filters/lbdcascade_frontlface.xml" />
+    <node pkg="ros_kalman_filter" name="ros_kalman_filter" type="ros_kalman_filter" output="screen" />
+    <node pkg="ros_pid_controller" name="ros_pid_controller" type="ros_pid_controller" output="screen" />
 
+</launch>

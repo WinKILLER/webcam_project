@@ -94,7 +94,7 @@ RosKalmanFilterNode::RosKalmanFilterNode():
     kalman_msg_.layout.dim[0].label = "face_position_kalman";
     kalman_msg_.layout.dim[0].size = 4;
     kalman_msg_.data.resize(4);
-    kalman_publi = nh_.advertise<std_msgs::UInt32MultiArray>("kalman_out", 100);
+    kalman_publi = nh_.advertise<std_msgs::UInt32MultiArray>("kalman_out", 10);
 
     //set subscribers
     detected_pixels = nh_.subscribe("/ros_face_detector/detector_out", 10, &RosKalmanFilterNode::centerFacePixelsCallbacks, this);
@@ -158,14 +158,14 @@ void RosKalmanFilterNode::correction()
 {
     H_T = H.transpose();
     z_predicted = H * x_predicted;
-    if(distanceMalanovich() <= 7) {
+    //if(distanceMalanovich() <= 7) {
 
         K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
         x_t = x_predicted + K*(z_t - z_predicted);
 
         Eigen::Matrix4d TEMP = (I - (K * H));
         C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
-    }
+    //}
 }
 
 double RosKalmanFilterNode::distanceMalanovich()

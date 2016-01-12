@@ -54,7 +54,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     pid_msg_.data.resize(1);
 
     //set publishers
-    pid_publi = nh_.advertise<std_msgs::UInt32MultiArray>("pwm_output", 100);
+    pid_publi = nh_.advertise<std_msgs::UInt32MultiArray>("pwm_output", 10);
 
     //set subscribers
     kalman_subscriber = nh_.subscribe("/ros_face_detector/detector_out", 1, &PidNode::kalmanfiltercallback, this);

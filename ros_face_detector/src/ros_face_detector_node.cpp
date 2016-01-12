@@ -37,7 +37,7 @@
  * EXPORTED FUNCTIONS
  *****************************************************************************/
 
-RosFaceDetectorNode::RosFaceDetectorNode():
+RosFaceDetectorNode::RosFaceDetectorNode(const char* xml_filename):
     nh_(ros::this_node::getName()),
     img_tp_(nh_)
 {
@@ -50,13 +50,13 @@ RosFaceDetectorNode::RosFaceDetectorNode():
     detect_msg_.layout.dim[0].size = 4;
     detect_msg_.data.resize(4);
 
-    detector_publi = nh_.advertise<std_msgs::UInt32MultiArray>("/ros_face_detector/detector_out",100);
+    detector_publi = nh_.advertise<std_msgs::UInt32MultiArray>("detector_out",100);
 
     //sets subscribers
     image_subs_ = img_tp_.subscribe("/ros_img_processor/image_out", 10, &RosFaceDetectorNode::imageCallback, this);
 
     //face detector init
-    face_detect_.load("./src/webcam_project/ros_face_detector/filters/lbdcascade_frontlface.xml");
+    face_detect_.load(xml_filename);
 }
 
 RosFaceDetectorNode::~RosFaceDetectorNode()
@@ -78,7 +78,6 @@ void RosFaceDetectorNode::publish()
 {
     detect_msg_.data.clear();
     detect_msg_.data.resize(4);
-
     if (faces_.size() > 0) {
         detect_msg_.data[0] = faces_[0].x;
         detect_msg_.data[1] = faces_[0].y;
@@ -92,6 +91,7 @@ double RosFaceDetectorNode::getRate() const
 {
     return rate_;
 }
+
 
 /******************************************************************************
  * LOCAL FUNCTIONS

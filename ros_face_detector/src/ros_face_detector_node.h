@@ -79,7 +79,7 @@ protected:
     void imageCallback(const sensor_msgs::ImageConstPtr& _msg);
 
 public:
-    RosFaceDetectorNode();
+    RosFaceDetectorNode(const char *filename);
     ~RosFaceDetectorNode();
 
     void publish();

@@ -49,13 +49,13 @@ RosImgProcessorNode::RosImgProcessorNode() :
     rate_=10;
 
     //sets publishers
-    image_pub_ = img_tp_.advertise("image_out", 100);
+    image_pub_ = img_tp_.advertise("/ros_img_processor/image_out", 10);
 
     //sets subscribers
     image_subs_ = img_tp_.subscribe("image_in", 1, &RosImgProcessorNode::imageCallback, this);
-    camera_info_subs_ = nh_.subscribe("camera_info_in", 100, &RosImgProcessorNode::cameraInfoCallback, this);
-    detector_subs_ = nh_.subscribe("/ros_face_detector/detector_out", 100, &RosImgProcessorNode::detectorFacePixelsCallbacks, this);
-    kalman_subs_ = nh_.subscribe("/ros_kalman_filter/kalman_out", 100, &RosImgProcessorNode::kalmanFacePixelsCallbacks, this);
+    camera_info_subs_ = nh_.subscribe("camera_info_in", 10, &RosImgProcessorNode::cameraInfoCallback, this);
+    detector_subs_ = nh_.subscribe("/ros_face_detector/detector_out", 10, &RosImgProcessorNode::detectorFacePixelsCallbacks, this);
+    kalman_subs_ = nh_.subscribe("/ros_kalman_filter/kalman_out", 10, &RosImgProcessorNode::kalmanFacePixelsCallbacks, this);
 
 }
 

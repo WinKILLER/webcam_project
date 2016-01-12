@@ -44,7 +44,7 @@
 int main(int argc, char **argv)
 {
     //init ros
-    ros::init(argc, argv, "ros_pid");
+    ros::init(argc, argv, "ros_pid_controller");
 
     double Input, Output, Setpoint;
 
