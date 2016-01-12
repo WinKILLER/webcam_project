@@ -160,11 +160,11 @@ void RosKalmanFilterNode::correction()
     z_predicted = H * x_predicted;
     //if(distanceMalanovich() <= 7) {
 
-        K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
-        x_t = x_predicted + K*(z_t - z_predicted);
+    K = C_x_predicted * H_T * ((H * C_x_predicted * H_T) + C_nz).inverse();
+    x_t = x_predicted + K*(z_t - z_predicted);
 
-        Eigen::Matrix4d TEMP = (I - (K * H));
-        C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
+    Eigen::Matrix4d TEMP = (I - (K * H));
+    C_x = TEMP * C_x_predicted * TEMP.transpose() + K * C_nz * K.transpose();
     //}
 }
 
@@ -192,7 +192,6 @@ void RosKalmanFilterNode::publish()
     kalman_msg_.data[2] = (uint)x_t[2];
     kalman_msg_.data[3] = (uint)x_t[3];
 
-    std::cout << x_t << std::endl;
     kalman_publi.publish(kalman_msg_);
 }
 

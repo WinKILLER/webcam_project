@@ -77,11 +77,11 @@ void RosImgProcessorNode::process()
         //mark a rectangle in the center: http://docs.opencv.org/2.4.11/modules/core/doc/drawing_functions.html#rectangle
         if(box_detector_.x > 0) {
 
-            cv::rectangle(cv_img_out_.image, box_detector_, cv::Scalar(0,0,255), 3);
+            cv::rectangle(cv_img_out_.image, box_detector_, cv::Scalar(255,0,0), 1);
         }
         if(box_kalman_.x >0) {
 
-            cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(255,0,0), 3);
+            cv::rectangle(cv_img_out_.image, box_kalman_, cv::Scalar(0,255,0), 2);
         }
     }
 
@@ -107,8 +107,10 @@ double RosImgProcessorNode::getRate() const
 void RosImgProcessorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
 {
     try {
-        img_encoding_ = _msg->encoding;//get image encodings
-        cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
+        if (_msg->data.size() > 0) {
+            img_encoding_ = _msg->encoding;//get image encodings
+            cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
+        }
     } catch (cv_bridge::Exception& e) {
         ROS_ERROR("RosImgProcessorNode::image_callback(): cv_bridge exception: %s", e.what());
         return;

@@ -100,8 +100,10 @@ double RosFaceDetectorNode::getRate() const
 void RosFaceDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& _msg)
 {
     try {
-        img_encoding_ = _msg->encoding;//get image encodings
-        cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
+        if (_msg->data.size() > 0) {
+            img_encoding_ = _msg->encoding;//get image encodings
+            cv_img_ptr_in_ = cv_bridge::toCvCopy(_msg, _msg->encoding);//get image
+        }
     } catch (cv_bridge::Exception& e) {
         ROS_ERROR("RosImgProcessorNode::image_callback(): cv_bridge exception: %s", e.what());
         return;

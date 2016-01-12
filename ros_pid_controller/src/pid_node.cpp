@@ -20,6 +20,8 @@
  * DEFINITIONS AND MACROS
  *****************************************************************************/
 
+#define MAX_SERVO_SPEED (40)
+
 /******************************************************************************
  * TYPEDEFS AND STRUCTURES
  *****************************************************************************/
@@ -54,7 +56,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     pid_msg_.data.resize(1);
 
     //set publishers
-    pid_publi = nh_.advertise<std_msgs::UInt32MultiArray>("pwm_output", 10);
+    pid_publi = nh_.advertise<std_msgs::Int32MultiArray>("pwm_output", 10);
 
     //set subscribers
     kalman_subscriber = nh_.subscribe("/ros_face_detector/detector_out", 1, &PidNode::kalmanfiltercallback, this);
@@ -64,7 +66,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     mySetpoint = Setpoint;
     inAuto = false;
 
-    PidNode::SetOutputLimits(0, 180);
+    PidNode::SetOutputLimits(-MAX_SERVO_SPEED, MAX_SERVO_SPEED);
 
     SampleTime = 0.1;							//default Controller Sample Time is 0.1 seconds
 

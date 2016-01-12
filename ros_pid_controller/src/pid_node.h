@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <ros/ros.h>
+#include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/UInt32MultiArray.h>
 
 /******************************************************************************
@@ -39,7 +40,7 @@ protected:
 
     ros::Subscriber kalman_subscriber;
 
-    std_msgs::UInt32MultiArray pid_msg_;
+    std_msgs::Int32MultiArray pid_msg_;
     ros::Publisher pid_publi;
 
     double rate_;
