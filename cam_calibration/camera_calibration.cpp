@@ -101,13 +101,7 @@ public:
             }
             else
             {
-                if (readStringList(input, imageList))
-                    {
-                        inputType = IMAGE_LIST;
-                        nrFrames = (nrFrames < (int)imageList.size()) ? nrFrames : (int)imageList.size();
-                    }
-                else
-                    inputType = VIDEO_FILE;
+                inputType = VIDEO_FILE;
             }
             if (inputType == CAMERA)
                 inputCapture.open(cameraID);
