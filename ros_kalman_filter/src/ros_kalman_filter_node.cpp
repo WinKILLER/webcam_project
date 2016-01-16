@@ -187,10 +187,10 @@ void RosKalmanFilterNode::publish()
     kalman_msg_.data.clear();
     kalman_msg_.data.resize(4);
 
-    kalman_msg_.data[0] = (uint)x_t[0];
-    kalman_msg_.data[1] = (uint)x_t[1];
-    kalman_msg_.data[2] = (uint)x_t[2];
-    kalman_msg_.data[3] = (uint)x_t[3];
+      kalman_msg_.data[0] = (uint)x_t[0];
+      kalman_msg_.data[1] = (uint)x_t[1];
+      kalman_msg_.data[2] = (uint)x_t[2];
+      kalman_msg_.data[3] = (uint)x_t[3];
 
     kalman_publi.publish(kalman_msg_);
 }
@@ -208,6 +208,7 @@ void RosKalmanFilterNode::centerFacePixelsCallbacks(const std_msgs::UInt32MultiA
         z_t[1] = _msg -> data[1];
         // z_t[2] = _msg -> data[2];
         // z_t[3] = _msg -> data[3];
+        lastCallback = ros::Time::now().toSec();
     } catch (ros::Exception& e) {
         ROS_ERROR("RosKalmanFilterNode::centerFacePixelsCallbacks(): exception: %s", e.what());
         return;

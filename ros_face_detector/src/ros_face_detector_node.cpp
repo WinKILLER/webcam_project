@@ -70,7 +70,7 @@ void RosFaceDetectorNode::detectFace()
         //copy the input image to the out one
         image_ = cv_img_ptr_in_->image;
         cv::cvtColor(image_, gray_, CV_BGR2GRAY);
-        face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(48, 48), cv::Size(480,480));
+        face_detect_.detectMultiScale(gray_, faces_, 1.3, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(24, 24), cv::Size(480,480));
     }
 }
 

@@ -39,6 +39,7 @@ protected:
     ros::NodeHandle nh_;
 
     ros::Subscriber kalman_subscriber;
+    ros::Subscriber face_subscriber;
 
     std_msgs::Int32MultiArray pid_msg_;
     ros::Publisher pid_publi;
@@ -69,13 +70,16 @@ protected:
     double outMin, outMax;
     bool inAuto;
 
+    int width, height;
+
 protected:
     //callbacks
     void kalmanfiltercallback(const std_msgs::UInt32MultiArrayConstPtr& msg);
+    void detectorFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg);
 
 public:
     PidNode(double*, double*, double*,        // * constructor.  links the PID to the Input, Output, and
-            double, double, double, int);     //   Setpoint.  Initial tuning parameters are also set here
+            double, double, double, int, const std::string);     //   Setpoint.  Initial tuning parameters are also set here
     ~PidNode();
 
     void SetMode(int Mode);               // * sets PID to either Manual (0) or Auto (non-0)

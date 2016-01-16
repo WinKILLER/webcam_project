@@ -20,7 +20,7 @@
  * DEFINITIONS AND MACROS
  *****************************************************************************/
 
-#define MAX_SERVO_SPEED (40)
+#define MAX_SERVO_SPEED (10)
 
 /******************************************************************************
  * TYPEDEFS AND STRUCTURES
@@ -43,7 +43,8 @@
  *****************************************************************************/
 
 PidNode::PidNode(double* Input, double* Output, double* Setpoint,
-                 double Kp, double Ki, double Kd, int ControllerDirection):
+                 double Kp, double Ki, double Kd, int ControllerDirection,
+                 const std::string publi_name ):
     nh_(ros::this_node::getName())
 {
     //loop rate [hz], Could be set from a yaml file
@@ -56,17 +57,18 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     pid_msg_.data.resize(1);
 
     //set publishers
-    pid_publi = nh_.advertise<std_msgs::Int32MultiArray>("pwm_output", 10);
+    pid_publi = nh_.advertise<std_msgs::Int32MultiArray>(publi_name, 10);
 
     //set subscribers
-    kalman_subscriber = nh_.subscribe("/ros_face_detector/detector_out", 1, &PidNode::kalmanfiltercallback, this);
+    kalman_subscriber = nh_.subscribe("/ros_kalman_filter/kalman_out", 1, &PidNode::kalmanfiltercallback, this);
+    face_subscriber = nh_.subscribe("/ros_face_detector/detector_out", 1, &PidNode::detectorFacePixelsCallbacks, this);
 
     myOutput = Output;
     myInput = Input;
     mySetpoint = Setpoint;
     inAuto = false;
 
-    PidNode::SetOutputLimits(-MAX_SERVO_SPEED, MAX_SERVO_SPEED);
+    PidNode::SetOutputLimits(-9, 3);
 
     SampleTime = 0.1;							//default Controller Sample Time is 0.1 seconds
 
@@ -220,8 +222,23 @@ double PidNode::getRate() const
 
 void PidNode::kalmanfiltercallback(const std_msgs::UInt32MultiArrayConstPtr& msg)
 {
-    double horizontalCenter = msg->data[0] + msg->data[2]/2;
+    double horizontalCenter = msg->data[0] + width/2;
+    double verticalCenter = msg->data[1] + height/2;
     *myInput = horizontalCenter;
+}
+
+void PidNode::detectorFacePixelsCallbacks(const std_msgs::UInt32MultiArrayConstPtr& _msg)
+{
+    try {
+        if (_msg->data.size() > 0)
+        {
+          width = _msg->data[2];
+          height = _msg->data[3];
+        }
+    } catch(ros::Exception& e) {
+        ROS_ERROR("PidNode::centerFacePixelsCallbacks(): exception: %s", e.what());
+        return;
+    }
 }
 
 /******************************************************************************

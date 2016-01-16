@@ -53,6 +53,7 @@ protected:
 
     //wished process rate [hz]
     double rate_;
+    double lastCallback;
 
 protected:
     //callbacks
