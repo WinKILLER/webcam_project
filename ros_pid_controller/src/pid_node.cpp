@@ -50,6 +50,8 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     //loop rate [hz], Could be set from a yaml file
     rate_=10;
 
+    isVertical_ = false;
+
     //sets publishers
     pid_msg_.layout.dim.resize(1);
     pid_msg_.layout.dim[0].label = "servo_pid_values";
@@ -58,6 +60,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
 
     //set publishers
     pid_publi = nh_.advertise<std_msgs::Int32MultiArray>(publi_name, 10);
+    joint_publisher = nh_.advertise<sensor_msgs::JointState>("kinematics/joint_states", 1, true);
 
     //set subscribers
     kalman_subscriber = nh_.subscribe("/ros_kalman_filter/kalman_out", 1, &PidNode::kalmanfiltercallback, this);
@@ -66,7 +69,14 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     myOutput = Output;
     myInput = Input;
     mySetpoint = Setpoint;
-    inAuto = false;
+    inAuto = false;  
+
+    names.resize(2);
+    names.at(0) = "base_to_body";
+    names.at(1) = "body_to_head";
+
+    my_joints.name = names;
+    my_joints.position.resize(2);
 
     PidNode::SetOutputLimits(-9, 3);
 
@@ -213,6 +223,14 @@ void PidNode::publish()
     pid_msg_.data[0] = *myOutput;
 
     pid_publi.publish(pid_msg_);
+
+    if (!isVertical_){
+        my_joints.velocity.at(0) =  *myOutput;
+    }else if(isVertical_){
+        my_joints.velocity.at(1) = *myOutput;
+    }
+
+    joint_publisher.publish(my_joints);
 }
 
 double PidNode::getRate() const

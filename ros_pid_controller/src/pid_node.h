@@ -19,6 +19,10 @@
 #include <ros/ros.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/UInt32MultiArray.h>
+#include <sensor_msgs/JointState.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <kdl_conversions/kdl_msg.h>
+#include <urdf/model.h>
 
 /******************************************************************************
  * DEFINITIONS AND MACROS
@@ -43,6 +47,11 @@ protected:
 
     std_msgs::Int32MultiArray pid_msg_;
     ros::Publisher pid_publi;
+    ros::Publisher joint_publisher;
+
+    std::vector<std::string> names;
+
+    sensor_msgs::JointState my_joints;
 
     double rate_;
 
@@ -57,6 +66,7 @@ protected:
     double kd;                  // * (D)erivative Tuning Parameter
 
     int controllerDirection;
+    bool isVertical_;
 
     double *myInput;        // * Pointers to the Input, Output, and Setpoint variables
     double *myOutput;       //   This creates a hard link between the variables and the
