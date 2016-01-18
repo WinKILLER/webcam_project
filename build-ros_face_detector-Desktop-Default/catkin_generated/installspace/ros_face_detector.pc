@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: ros_face_detector
-Description: Description of ros_face_detector
-Version: 0.0.0
-Cflags: 
-Libs: -L/usr/local/lib 
-Requires: roscpp rospy image_transport cv_bridge

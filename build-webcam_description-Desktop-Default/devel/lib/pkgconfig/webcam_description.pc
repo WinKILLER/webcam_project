@@ -1,8 +1,0 @@
-prefix=/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/devel
-
-Name: webcam_description
-Description: Description of webcam_description
-Version: 0.1.0
-Cflags: 
-Libs: -L/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/devel/lib 
-Requires: 

@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "ros_kalman_filter")
-set(ros_kalman_filter_MAINTAINER "Oriol Orra Serra <oriolorraserra@gmail.com>")
-set(ros_kalman_filter_DEPRECATED "")
-set(ros_kalman_filter_VERSION "0.0.0")
-set(ros_kalman_filter_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
-set(ros_kalman_filter_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
-set(ros_kalman_filter_BUILDTOOL_DEPENDS "catkin")

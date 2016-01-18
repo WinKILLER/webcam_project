@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "ros_img_processor")
-set(ros_img_processor_MAINTAINER "Andreu Corominas Murtra <andreu@beta-robots.com>")
-set(ros_img_processor_DEPRECATED "")
-set(ros_img_processor_VERSION "0.0.0")
-set(ros_img_processor_BUILD_DEPENDS "roscpp" "rospy" "image_transport" "cv_bridge")
-set(ros_img_processor_RUN_DEPENDS "roscpp" "rospy" "image_transport" "cv_bridge")
-set(ros_img_processor_BUILDTOOL_DEPENDS "catkin")

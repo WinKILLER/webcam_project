@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "pid")
-set(pid_MAINTAINER "Carles Oro <carles.oro26@gmail.com>")
-set(pid_DEPRECATED "")
-set(pid_VERSION "0.0.0")
-set(pid_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
-set(pid_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
-set(pid_BUILDTOOL_DEPENDS "catkin")

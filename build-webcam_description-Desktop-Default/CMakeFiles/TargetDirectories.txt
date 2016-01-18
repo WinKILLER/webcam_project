@@ -1,9 +1,0 @@
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/_catkin_empty_exported_target.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/clean_test_results.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/clean_test_results_webcam_description.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/download_extra_data.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/doxygen.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/gtest/CMakeFiles/gtest.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/gtest/CMakeFiles/gtest_main.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/run_tests.dir
-/home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/CMakeFiles/tests.dir

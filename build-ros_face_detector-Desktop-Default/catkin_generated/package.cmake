@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "ros_face_detector")
-set(ros_face_detector_MAINTAINER "Oriol Orra Serra <oriolorraserra@gmail.com>")
-set(ros_face_detector_DEPRECATED "")
-set(ros_face_detector_VERSION "0.0.0")
-set(ros_face_detector_BUILD_DEPENDS "roscpp" "rospy" "image_transport" "cv_bridge")
-set(ros_face_detector_RUN_DEPENDS "roscpp" "rospy" "image_transport" "cv_bridge")
-set(ros_face_detector_BUILDTOOL_DEPENDS "catkin")
