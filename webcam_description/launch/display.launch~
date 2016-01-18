@@ -1,0 +1,13 @@
+<launch>
+
+  <param name="robot_description" textfile="$(find webcam_description)/robots/webcam_project.urdf" />	
+
+   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+    <rosparam param="source_list">[kinematics/joint_states] </rosparam>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find webcam_description)/launch/display.rviz"/>
+
+</launch>

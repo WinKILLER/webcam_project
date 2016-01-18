@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>webcam_description</name>
+  <version>0.1.0</version>
+  <description>webcam_description package</description>
+
+  <maintainer email="oriolorraserra@gmail.com">OriolOrra</maintainer>
+
+  <license>MIT</license>
+  <url type="bugtracker">https://github.com/oriolorra/webcam_project/issues</url>
+  <url type="repository">https://github.com/oriolorra/webcam_project</url>
+
+  <author email="oriolorraserra@gmail.com">Oriol Orra</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,8 @@
+prefix=/home/oos/catkin_ws/src/webcam_project/build-ros_img_processor-Desktop-Default/devel
+
+Name: ros_img_processor
+Description: Description of ros_img_processor
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/oos/catkin_ws/src/webcam_project/build-ros_img_processor-Desktop-Default/devel/lib 
+Requires: roscpp rospy image_transport cv_bridge

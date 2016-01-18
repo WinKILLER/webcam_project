@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/oos/catkin_ws/src/webcam_project/build-webcam_description-Desktop-Default/devel/setup.sh

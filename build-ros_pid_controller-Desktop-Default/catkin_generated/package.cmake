@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "ros_pid_controller")
+set(ros_pid_controller_MAINTAINER "Carles Oro <carles.oro26@gmail.com>")
+set(ros_pid_controller_DEPRECATED "")
+set(ros_pid_controller_VERSION "0.0.0")
+set(ros_pid_controller_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
+set(ros_pid_controller_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
+set(ros_pid_controller_BUILDTOOL_DEPENDS "catkin")
