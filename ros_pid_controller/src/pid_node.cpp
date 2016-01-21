@@ -60,7 +60,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
 
     //set publishers
     pid_publi = nh_.advertise<std_msgs::Int32MultiArray>(publi_name, 10);
-    joint_publisher = nh_.advertise<sensor_msgs::JointState>("kinematics/joint_states", 1, true);
+    joint_publisher = nh_.advertise<sensor_msgs::JointState>("/kinematics/joint_states", 1, true);
 
     //set subscribers
     kalman_subscriber = nh_.subscribe("/ros_kalman_filter/kalman_out", 1, &PidNode::kalmanfiltercallback, this);
@@ -69,16 +69,15 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
     myOutput = Output;
     myInput = Input;
     mySetpoint = Setpoint;
-    inAuto = false;  
+    inAuto = false;
 
-    names.resize(2);
+    names.resize(3);
     names.at(0) = "base_to_body";
     names.at(1) = "body_to_head";
+    names.at(2) = "head_to_webcam";
 
     my_joints.name = names;
-    my_joints.position.resize(2);
-
-    PidNode::SetOutputLimits(-9, 3);
+    my_joints.position.resize(3);
 
     SampleTime = 0.1;							//default Controller Sample Time is 0.1 seconds
 
@@ -224,11 +223,11 @@ void PidNode::publish()
 
     pid_publi.publish(pid_msg_);
 
-    if (!isVertical_){
-        my_joints.velocity.at(0) =  *myOutput;
-    }else if(isVertical_){
-        my_joints.velocity.at(1) = *myOutput;
-    }
+    my_joints.velocity.resize(3);
+
+    my_joints.velocity.at(0) =  *myOutput;
+    my_joints.velocity.at(1) = *myOutput;
+    my_joints.velocity.at(2) = *myOutput;
 
     joint_publisher.publish(my_joints);
 }
