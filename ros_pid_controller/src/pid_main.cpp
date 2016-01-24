@@ -50,14 +50,14 @@ int main(int argc, char **argv)
     double InputY, OutputY, SetpointY;
 
     //create ros wrapper object
-    PidNode pid(&Input, &Output, &Setpoint,0.05,0.5,1, DIRECT, "pwm_output_x");
-    PidNode pidY(&InputY, &OutputY, &SetpointY,0.05,0.5,1, DIRECT, "pwm_output_y");
+    PidNode pid(&Input, &Output, &Setpoint,0.001,0.5,500, DIRECT, "pwm_output_x");
+    PidNode pidY(&InputY, &OutputY, &SetpointY,0.001,0.5,500, DIRECT, "pwm_output_y");
 
     Setpoint = 320;
     SetpointY = 240;
 
-    pid.SetOutputLimits(88, 98);
-    pidY.SetOutputLimits(86, 97);
+    pid.SetOutputLimits(120, 134);
+    pidY.SetOutputLimits(120, 134);
 
     pid.SetMode(AUTOMATIC);
     pidY.SetMode(AUTOMATIC);

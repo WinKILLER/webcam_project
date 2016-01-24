@@ -60,7 +60,7 @@ PidNode::PidNode(double* Input, double* Output, double* Setpoint,
 
     //set publishers
     pid_publi = nh_.advertise<std_msgs::Int32MultiArray>(publi_name, 10);
-    joint_publisher = nh_.advertise<sensor_msgs::JointState>("/kinematics/joint_states", 1, true);
+    joint_publisher = nh_.advertise<sensor_msgs::JointState>("kinematics/joint_states", 1, true);
 
     //set subscribers
     kalman_subscriber = nh_.subscribe("/ros_kalman_filter/kalman_out", 1, &PidNode::kalmanfiltercallback, this);
@@ -95,15 +95,25 @@ PidNode::~PidNode()
 bool PidNode::Compute()
 {
     if(!inAuto) return false;
+
     double now = ros::Time::now().toSec();
     double timeChange = (now - lastTime);
+
     if(timeChange>=SampleTime) {
         /*Compute all the working error variables*/
         double input = *myInput;
         double error = *mySetpoint - input;
+
+        /*Window of comfort*/
+        if (!((70.0 < error)||(-70.0 > error))){
+           error = 0.0;
+        }
+
         ITerm+= (ki * error);
+        std::cout << "INSIDE:::::::::" << error << std::endl;
         if(ITerm > outMax) ITerm= outMax;
         else if(ITerm < outMin) ITerm= outMin;
+
         double dInput = (input - lastInput);
 
         /*Compute PID Output*/
@@ -111,12 +121,14 @@ bool PidNode::Compute()
 
         if(output > outMax) output = outMax;
         else if(output < outMin) output = outMin;
+
         *myOutput = output;
 
         /*Remember some variables for next time*/
         lastInput = input;
         lastTime = now;
         return true;
+
     } else return false;
 }
 
