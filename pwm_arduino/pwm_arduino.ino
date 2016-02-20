@@ -20,7 +20,7 @@ void servo_cb( const std_msgs::Int32MultiArray& cmd_msg)
 
   if (y > 180) y=180;
 
-  servoX.write(cmd_msg.data[0]); //set servo angle, should be from 0-180  
+  servoX.write(120); //set servo angle, should be from 0-180  
 }
 
 void servo_y_cb( const std_msgs::Int32MultiArray& cmd_msg)

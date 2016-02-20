@@ -29,6 +29,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/UInt32MultiArray.h>
+#include <std_msgs/Bool.h>
 
 /******************************************************************************
  * DEFINITIONS AND MACROS
@@ -59,6 +60,11 @@ protected:
     //publishers
     std_msgs::UInt32MultiArray detect_msg_;
     ros::Publisher detector_publi;
+
+    bool isDemo_ = true;
+    std::stringstream ss_;
+    std_msgs::Bool faceDetected_ ;
+    ros::Publisher uvic_demo_publi;
 
     //pointer to received (in) and published (out) images
     cv_bridge::CvImagePtr cv_img_ptr_in_;

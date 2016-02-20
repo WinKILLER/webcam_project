@@ -52,6 +52,8 @@ RosFaceDetectorNode::RosFaceDetectorNode(const char* xml_filename):
 
     detector_publi = nh_.advertise<std_msgs::UInt32MultiArray>("detector_out",100);
 
+    uvic_demo_publi = nh_.advertise<std_msgs::Bool>("demoUvic_detector_out",100);
+
     //sets subscribers
     image_subs_ = img_tp_.subscribe("/ros_img_processor/image_out", 10, &RosFaceDetectorNode::imageCallback, this);
 
@@ -78,12 +80,21 @@ void RosFaceDetectorNode::publish()
 {
     detect_msg_.data.clear();
     detect_msg_.data.resize(4);
-    if (faces_.size() > 0) {
-        detect_msg_.data[0] = faces_[0].x;
-        detect_msg_.data[1] = faces_[0].y;
-        detect_msg_.data[2] = faces_[0].width;
-        detect_msg_.data[3] = faces_[0].height;
-        detector_publi.publish(detect_msg_);
+
+    if(!isDemo_){
+        if (faces_.size() > 0) {
+            detect_msg_.data[0] = faces_[0].x;
+            detect_msg_.data[1] = faces_[0].y;
+            detect_msg_.data[2] = faces_[0].width;
+            detect_msg_.data[3] = faces_[0].height;
+            detector_publi.publish(detect_msg_);
+        }
+    }else{
+        if (faces_.size() > 0) {
+            faceDetected_.data = true;
+            uvic_demo_publi.publish(faceDetected_);
+        }
+        faceDetected_.data = false;
     }
 }
 
